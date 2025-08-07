@@ -1,0 +1,4 @@
+.venv/
+feeds/
+.idea/
+__pycache__/
