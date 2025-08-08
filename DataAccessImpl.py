@@ -1,6 +1,9 @@
+import os
+
 from IDataAccess import IDataAccess
 import csv
 import mysql.connector
+import re
 
 
 class DataAccessImpl(IDataAccess):
@@ -24,7 +27,13 @@ class DataAccessImpl(IDataAccess):
             return 0
         return value
 
-
+    @staticmethod
+    def check_for_subdirectories(directory):
+        objects = os.listdir(directory)
+        for o in objects:
+            if os.path.isdir(os.path.join(directory, o)):
+                return True
+        return False
 
     # load the feed file into the staging table and
     # call out the stored proc to formalise the data
@@ -33,9 +42,57 @@ class DataAccessImpl(IDataAccess):
     def load_feed_data(self, feed_files: list):
         for feed_file in feed_files:
             print("[INFO] Loading data file : " + feed_file)
-            csv_read_rows = DataAccessImpl.get_csv_rows(feed_file)
-            self.populate_staging_data(csv_read_rows)
+            try:
+                csv_read_rows = DataAccessImpl.get_csv_rows(feed_file)
+                self.populate_staging_data(csv_read_rows)
+            except UnicodeDecodeError:
+                print("[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file [ " + feed_file + " ]")
 
+    def load_feed_data_by_directory(self, directory_path : str):
+        pattern = re.compile("^\\d{4}-\\d{2}-\\d{2}$")
+        valid_subdirectories = []
+        if not os.path.exists(directory_path):
+            raise Exception("Directory " + directory_path + " does not exist")
+
+        contains_subdirectories = DataAccessImpl.check_for_subdirectories(directory_path)
+
+        if contains_subdirectories:
+            # check to see if the directory has dated subdirectories in it:
+            # e.g. feeds
+            #       |_> 2025-01-01
+            #       |_> 2025-01-02
+
+            file_entries = os.listdir(directory_path)
+            for f in file_entries:
+                subfolder_path = os.path.join(directory_path, os.path.basename(f))
+                if os.path.isdir(subfolder_path):
+                    # check the folder name to see if it has the date format?
+                    folder_name = os.path.basename(f)
+                    if re.match(pattern, folder_name):
+                        valid_subdirectories.append(subfolder_path)
+
+            # now process the feeds in these dated subdirectories
+            valid_subdirectories.sort()
+
+            for subdirectory in valid_subdirectories:
+                file_entries = os.listdir(subdirectory)
+                feed_file_paths = []
+                for file in file_entries:
+                    file_name = os.path.abspath(os.path.join(subdirectory, file))
+                    feed_file_paths.append(file_name)
+                # now load the feed files (for each dated subdirectory) in the data store
+                feed_file_paths.sort()
+                self.load_feed_data(feed_file_paths)
+        else:
+            # assume that feed files (txt) are already in the specified directory
+            # and start to process them
+
+            file_entries = os.listdir(directory_path)
+            files = [
+                os.path.abspath(os.path.join(directory_path, f))
+                for f in file_entries if os.path.isfile(os.path.join(directory_path, f))]
+            files.sort()
+            self.load_feed_data(files)
 
     @staticmethod
     def convert_none(value : str):

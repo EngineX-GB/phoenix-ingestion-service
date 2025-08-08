@@ -18,4 +18,6 @@ if __name__ == "__main__":
                        'feeds/clients_2025-08-07_131602.txt',
                        'feeds/clients_2025-08-07_131618.txt'
                        ]
-    dataAccess.load_feed_data(feed_files_list)
+    #dataAccess.load_feed_data(feed_files_list)
+
+    dataAccess.load_feed_data_by_directory("C:/Users/Dell/PycharmProjects/data-ingestion/feeds")
