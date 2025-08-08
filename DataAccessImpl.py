@@ -59,11 +59,11 @@ class DataAccessImpl(IDataAccess):
         insert_client_row_statement = ("INSERT INTO tbl_client_temp ("
                                        "username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_1_hour, "
                                        "rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, "
-                                       "rate_overnight, telephone, url_page, user_id, region, hair_colour, eye_colour, verified, "
+                                       "rate_overnight, telephone, url_page, refresh_time, user_id, region, hair_colour, eye_colour, verified, "
                                        "email, preference_list, record_source"
                                        ") "
                                        "VALUES "
-                                       "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+                                       "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         for row in csv_row:
             value_client_row_ = (row.__getitem__(0),  # username
                                  row.__getitem__(1),  # nationality
@@ -82,6 +82,7 @@ class DataAccessImpl(IDataAccess):
                                  int(row.__getitem__(15)),  # ov
                                  row.__getitem__(16),  # tel
                                  row.__getitem__(17),  # url
+                                 row.__getitem__(18),  # refresh_time
                                  row.__getitem__(19),  # userid
                                  row.__getitem__(21),  # region
                                  DataAccessImpl.convert_none(row.__getitem__(26)),  # haircol
