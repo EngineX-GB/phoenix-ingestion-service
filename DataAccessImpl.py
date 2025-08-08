@@ -25,6 +25,7 @@ class DataAccessImpl(IDataAccess):
         return value
 
 
+
     # load the feed file into the staging table and
     # call out the stored proc to formalise the data
     # in the main table
@@ -35,6 +36,12 @@ class DataAccessImpl(IDataAccess):
             csv_read_rows = DataAccessImpl.get_csv_rows(feed_file)
             self.populate_staging_data(csv_read_rows)
 
+
+    @staticmethod
+    def convert_none(value : str):
+        if value == "None":
+            return None
+        return value
 
     def populate_staging_data(self, csv_row: list):
         mydb = mysql.connector.connect(
@@ -52,10 +59,11 @@ class DataAccessImpl(IDataAccess):
         insert_client_row_statement = ("INSERT INTO tbl_client_temp ("
                                        "username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_1_hour, "
                                        "rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, "
-                                       "rate_overnight, telephone, url_page, user_id, region, hair_colour, eye_colour"
+                                       "rate_overnight, telephone, url_page, user_id, region, hair_colour, eye_colour, verified, "
+                                       "email, preference_list, record_source"
                                        ") "
                                        "VALUES "
-                                       "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+                                       "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         for row in csv_row:
             value_client_row_ = (row.__getitem__(0),  # username
                                  row.__getitem__(1),  # nationality
@@ -76,9 +84,12 @@ class DataAccessImpl(IDataAccess):
                                  row.__getitem__(17),  # url
                                  row.__getitem__(19),  # userid
                                  row.__getitem__(21),  # region
-                                 row.__getitem__(26),  # haircol
-                                 row.__getitem__(27)  # eyecol
-                                 )
+                                 DataAccessImpl.convert_none(row.__getitem__(26)),  # haircol
+                                 DataAccessImpl.convert_none(row.__getitem__(27)),  # eyecol
+                                 bool(row.__getitem__(28)),  # verified
+                                 DataAccessImpl.convert_none(row.__getitem__(29)),  # email
+                                 row.__getitem__(30),  # preference_list
+                                 "FEED_FILE")
             mysqlcursor.execute(insert_client_row_statement, value_client_row_)
 
         mydb.commit()
