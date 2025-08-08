@@ -6,14 +6,11 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 1:
         print("[ERROR] Invalid number of parameters. Type --help for more information")
-        exit(1)
     if sys.argv[1] == "--help":
         print("[INFO] Help Manual added here")
-        exit(0)
     if sys.argv[1] == "--service":
         print("[INFO] Running Ingestion Service....")
         print("[WARN] This feature is not supported yet.")
-        exit(0)
     if sys.argv[1] == "--cmd":
         print("[INFO] Running Ingestion Service....")
         if sys.argv[2] == "--batch":
