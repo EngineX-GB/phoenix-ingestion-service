@@ -2,7 +2,7 @@ import abc
 from abc import ABC, abstractmethod
 
 
-class IDataAccess(ABC):
+class IDataIngestion(ABC):
 
     @abc.abstractmethod
     def load_feed_data(self, feed_files: list):

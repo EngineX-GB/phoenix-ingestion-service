@@ -1,39 +1,16 @@
 import os
 
-from IDataAccess import IDataAccess
-import csv
+from IDataIngestion import IDataIngestion
 import mysql.connector
 import re
 
+from IngestionUtil import IngestionUtil
 
-class DataAccessImpl(IDataAccess):
+
+class DataIngestionImpl(IDataIngestion):
 
     def __init__(self):
         pass
-
-    @staticmethod
-    def get_csv_rows(filename):
-        datarows = []
-        with open(filename) as file:
-            rows = csv.reader(file, delimiter='|')
-            for row in rows:
-                datarows.append(row)
-        print("[INFO] Returning " + str(len(datarows)) + " records from " + filename)
-        return datarows
-
-    @staticmethod
-    def parse_not_specified_value(value: str):
-        if value == "Not Specified":
-            return 0
-        return value
-
-    @staticmethod
-    def check_for_subdirectories(directory):
-        objects = os.listdir(directory)
-        for o in objects:
-            if os.path.isdir(os.path.join(directory, o)):
-                return True
-        return False
 
     # load the feed file into the staging table and
     # call out the stored proc to formalise the data
@@ -43,7 +20,7 @@ class DataAccessImpl(IDataAccess):
         for feed_file in feed_files:
             print("[INFO] Loading data file : " + feed_file)
             try:
-                csv_read_rows = DataAccessImpl.get_csv_rows(feed_file)
+                csv_read_rows = IngestionUtil.get_csv_rows(feed_file)
                 self.populate_staging_data(csv_read_rows)
             except UnicodeDecodeError:
                 print("[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file [ " + feed_file + " ]")
@@ -54,7 +31,7 @@ class DataAccessImpl(IDataAccess):
         if not os.path.exists(directory_path):
             raise Exception("Directory " + directory_path + " does not exist")
 
-        contains_subdirectories = DataAccessImpl.check_for_subdirectories(directory_path)
+        contains_subdirectories = IngestionUtil.check_for_subdirectories(directory_path)
 
         if contains_subdirectories:
             # check to see if the directory has dated subdirectories in it:
@@ -94,12 +71,6 @@ class DataAccessImpl(IDataAccess):
             files.sort()
             self.load_feed_data(files)
 
-    @staticmethod
-    def convert_none(value : str):
-        if value == "None":
-            return None
-        return value
-
     def populate_staging_data(self, csv_row: list):
         mydb = mysql.connector.connect(
             host="localhost",
@@ -126,7 +97,7 @@ class DataAccessImpl(IDataAccess):
                                  row.__getitem__(1),  # nationality
                                  row.__getitem__(2),  # location
                                  int(row.__getitem__(3)),  # rating
-                                 int(DataAccessImpl.parse_not_specified_value(row.__getitem__(4))),  # age
+                                 int(IngestionUtil.parse_not_specified_value(row.__getitem__(4))),  # age
                                  int(row.__getitem__(5)),  # 15
                                  int(row.__getitem__(6)),  # 30
                                  int(row.__getitem__(8)),  # 1
@@ -142,10 +113,10 @@ class DataAccessImpl(IDataAccess):
                                  row.__getitem__(18),  # refresh_time
                                  row.__getitem__(19),  # userid
                                  row.__getitem__(21),  # region
-                                 DataAccessImpl.convert_none(row.__getitem__(26)),  # haircol
-                                 DataAccessImpl.convert_none(row.__getitem__(27)),  # eyecol
+                                 IngestionUtil.convert_none(row.__getitem__(26)),  # haircol
+                                 IngestionUtil.convert_none(row.__getitem__(27)),  # eyecol
                                  bool(row.__getitem__(28)),  # verified
-                                 DataAccessImpl.convert_none(row.__getitem__(29)),  # email
+                                 IngestionUtil.convert_none(row.__getitem__(29)),  # email
                                  row.__getitem__(30),  # preference_list
                                  "FEED_FILE")
             mysqlcursor.execute(insert_client_row_statement, value_client_row_)
