@@ -8,8 +8,7 @@ from IngestionUtil import IngestionUtil
 
 class CustomDataIngestionImpl(DataIngestionImpl):
 
-
-    def load_feed_data_by_directory(self, directory_path : str):
+    def populate_staging_data(self, csv_row: list):
 
         mydb = mysql.connector.connect(
             host="localhost",
@@ -37,15 +36,17 @@ class CustomDataIngestionImpl(DataIngestionImpl):
                                                    column["replaceNonSpecifiedValue"],
                                                    column["convertNullToNone"]))
 
-        insert_client_row_statement = "INSERT INTO tbl_client_temp (" + sql_column_names_string[:-1] + ") VALUES (" + sql_values_string[:-2] + ")"
-        rows = IngestionUtil.get_csv_rows("C:/Users/Dell/PycharmProjects/data-ingestion/feeds/2025-08-08/clients_2025-08-08_123505.txt")
+        insert_client_row_statement = "INSERT INTO tbl_client_temp (" + sql_column_names_string[
+                                                                        :-1] + ") VALUES (" + sql_values_string[
+                                                                                              :-2] + ")"
         print(insert_client_row_statement)
 
-        for row in rows:
+        for row in csv_row:
             for column in column_metadata_list:
                 if column.type == "int":
                     if column.replace_non_specified_value:
-                        parameter_object_list.append(int(IngestionUtil.parse_not_specified_value(row.__getitem__(column.position)))),  # age
+                        parameter_object_list.append(
+                            int(IngestionUtil.parse_not_specified_value(row.__getitem__(column.position)))),  # age
                     else:
                         parameter_object_list.append(int(row.__getitem__(column.position)))
                 elif column.type == "string":
@@ -68,8 +69,3 @@ class CustomDataIngestionImpl(DataIngestionImpl):
         mydb.commit()
         mysqlcursor.close()
         print("[INFO] Disconnected from data source : mysql")
-
-    def load_feed_data(self, feed_files: list):
-        pass
-    def populate_staging_data(self, csv_row: list):
-        pass
