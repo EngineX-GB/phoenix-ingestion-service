@@ -120,6 +120,9 @@ create table if not exists tbl_client_temp (
 create index idx_client_user_id on tbl_client(user_id);
 create index idx_client_temp_user_id on tbl_client_temp(user_id);
 
+-- 10-08-25 - create a tbl_client_history table from tbl_client_temp table
+create table tbl_client_history as (select * from tbl_client_temp limit 0);
+
 
 create table if not exists tbl_client_price_time_series_tracking (
 	oid integer not null auto_increment,
@@ -294,26 +297,25 @@ set d2.username = d1.username,
 			(select username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_45_min, rate_1_hour, rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified, email, preference_list, record_source from tbl_client_temp where user_id not in (select user_id from tbl_client));
 	set @new_records = ROW_COUNT();
 
-
 	-- flush all records in the temp table
 
 	delete from tbl_client_temp;
 	set @delete_temp_records = ROW_COUNT();
 
 insert into tbl_client_changes_tracker (user_id, field_value, old_value, new_value, record_datetime)
-	(select c.user_Id as user_id, "telephone" as fieldname, t.telephone as old_value, c.telephone as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "telephone" as fieldname, t.telephone as old_value, c.telephone as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.telephone <> t.telephone)
 	union
-	(select c.user_Id as user_id, "location" as fieldname, t.location as old_value, c.location as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "location" as fieldname, t.location as old_value, c.location as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_Id where c.location <> t.location)
 	union
-	(select c.user_Id as user_id, "username" as fieldname, t.username as old_value, c.username as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "username" as fieldname, t.username as old_value, c.username as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.username <> t.username)
 	union
-	(select c.user_Id as user_id, "rating" as fieldname, t.rating as old_value, c.rating as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "rating" as fieldname, t.rating as old_value, c.rating as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.rating <> t.rating)
 	union
-	(select c.user_Id as user_id, "nationality" as fieldname, t.nationality as old_value, c.nationality as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "nationality" as fieldname, t.nationality as old_value, c.nationality as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.nationality <> t.nationality);
 
 
@@ -591,19 +593,19 @@ begin
 	set @delete_temp_records = ROW_COUNT();
 
 insert into tbl_client_changes_tracker (user_id, field_value, old_value, new_value, record_datetime)
-	(select c.user_Id as user_id, "telephone" as fieldname, t.telephone as old_value, c.telephone as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "telephone" as fieldname, t.telephone as old_value, c.telephone as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.telephone <> t.telephone)
 	union
-	(select c.user_Id as user_id, "location" as fieldname, t.location as old_value, c.location as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "location" as fieldname, t.location as old_value, c.location as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_Id where c.location <> t.location)
 	union
-	(select c.user_Id as user_id, "username" as fieldname, t.username as old_value, c.username as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "username" as fieldname, t.username as old_value, c.username as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.username <> t.username)
 	union
-	(select c.user_Id as user_id, "rating" as fieldname, t.rating as old_value, c.rating as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "rating" as fieldname, t.rating as old_value, c.rating as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.rating <> t.rating)
 	union
-	(select c.user_Id as user_id, "nationality" as fieldname, t.nationality as old_value, c.nationality as new_value, now() as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	(select c.user_Id as user_id, "nationality" as fieldname, t.nationality as old_value, c.nationality as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.nationality <> t.nationality);
 
 
