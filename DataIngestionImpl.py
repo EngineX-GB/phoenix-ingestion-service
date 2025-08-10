@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 
 from IDataIngestion import IDataIngestion
 import mysql.connector
@@ -79,19 +80,21 @@ class DataIngestionImpl(IDataIngestion):
             database="db_phoenix"
         )
 
-        print("[INFO] Connected to data source : mysql")
+        # print("[INFO] Connected to data source : mysql")
 
         mysqlcursor = mydb.cursor()
 
         # insert data into staging table
         insert_client_row_statement = ("INSERT INTO tbl_client_temp ("
-                                       "username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_1_hour, "
+                                       "username, nationality, location, rating, age, rate_15_min, rate_30_min, "
+                                       "rate_45_min, rate_1_hour, "
                                        "rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, "
-                                       "rate_overnight, telephone, url_page, refresh_time, user_id, region, hair_colour, eye_colour, verified, "
+                                       "rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, "
+                                       "height, dress_size, hair_colour, eye_colour, verified, "
                                        "email, preference_list, record_source"
                                        ") "
                                        "VALUES "
-                                       "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+                                       "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         for row in csv_row:
             value_client_row_ = (row.__getitem__(0),  # username
                                  row.__getitem__(1),  # nationality
@@ -100,6 +103,7 @@ class DataIngestionImpl(IDataIngestion):
                                  int(IngestionUtil.parse_not_specified_value(row.__getitem__(4))),  # age
                                  int(row.__getitem__(5)),  # 15
                                  int(row.__getitem__(6)),  # 30
+                                 int(row.__getitem__(7)),  # 45
                                  int(row.__getitem__(8)),  # 1
                                  int(row.__getitem__(9)),  # 1.5
                                  int(row.__getitem__(10)),  # 2
@@ -112,7 +116,12 @@ class DataIngestionImpl(IDataIngestion):
                                  row.__getitem__(17),  # url
                                  row.__getitem__(18),  # refresh_time
                                  row.__getitem__(19),  # userid
+                                 bool(row.__getitem__(20)),  # imageAvailable
                                  row.__getitem__(21),  # region
+                                 IngestionUtil.convert_none(row.__getitem__(22)),  # gender
+                                 datetime.strptime(row.__getitem__(23), '%d/%m/%Y').strftime('%Y-%m-%d'), # member since (needs to be formatted)
+                                 IngestionUtil.convert_none(row.__getitem__(24)),  # height (needs to be converted)
+                                 IngestionUtil.convert_none_by_type(row.__getitem__(25), "int"),  # dress size (needs to be converted)
                                  IngestionUtil.convert_none(row.__getitem__(26)),  # haircol
                                  IngestionUtil.convert_none(row.__getitem__(27)),  # eyecol
                                  bool(row.__getitem__(28)),  # verified
@@ -123,8 +132,8 @@ class DataIngestionImpl(IDataIngestion):
 
         mydb.commit()
         # after the loads on the temp table, run the store proc to put it in the main table
-        print("[INFO] Running store proc to move data from staging to production table")
+        # print("[INFO] Running store proc to move data from staging to production table")
         mysqlcursor.callproc("prc_new_clean_up_data")
         mydb.commit()
         mysqlcursor.close()
-        print("[INFO] Disconnected from data source : mysql")
+        # print("[INFO] Disconnected from data source : mysql")

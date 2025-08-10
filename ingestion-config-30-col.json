@@ -7,7 +7,8 @@
       "nullable" : true,
       "position" : 0,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "nationality",
@@ -15,7 +16,8 @@
       "nullable" : true,
       "position" : 1,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "location",
@@ -23,7 +25,8 @@
       "nullable" : true,
       "position" : 2,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rating",
@@ -31,7 +34,8 @@
       "nullable" : false,
       "position" : 3,
       "replaceNonSpecifiedValue" : true,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "age",
@@ -39,7 +43,8 @@
       "nullable" : false,
       "position" : 4,
       "replaceNonSpecifiedValue" : true,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_15_min",
@@ -47,7 +52,8 @@
       "nullable" : false,
       "position" : 5,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_30_min",
@@ -55,7 +61,17 @@
       "nullable" : false,
       "position" : 6,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_45_min",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 7,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_1_hour",
@@ -63,7 +79,8 @@
       "nullable" : false,
       "position" : 8,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_1_50_hour",
@@ -71,7 +88,8 @@
       "nullable" : false,
       "position" : 9,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_2_hour",
@@ -79,7 +97,8 @@
       "nullable" : false,
       "position" : 10,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_2_50_hour",
@@ -87,7 +106,8 @@
       "nullable" : false,
       "position" : 11,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_3_hour",
@@ -95,7 +115,8 @@
       "nullable" : false,
       "position" : 12,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_3_50_hour",
@@ -103,7 +124,8 @@
       "nullable" : false,
       "position" : 13,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_4_hour",
@@ -111,7 +133,8 @@
       "nullable" : false,
       "position" : 14,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "rate_overnight",
@@ -119,7 +142,8 @@
       "nullable" : false,
       "position" : 15,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "telephone",
@@ -127,7 +151,8 @@
       "nullable" : true,
       "position" : 16,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "url_page",
@@ -135,7 +160,8 @@
       "nullable" : true,
       "position" : 17,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "refresh_time",
@@ -143,7 +169,8 @@
       "nullable" : true,
       "position" : 18,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "user_id",
@@ -151,7 +178,17 @@
       "nullable" : true,
       "position" : 19,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "image_available",
+      "type" : "boolean",
+      "nullable" : false,
+      "position" : 20,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "region",
@@ -159,7 +196,44 @@
       "nullable" : true,
       "position" : 21,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "gender",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 22,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "member_since",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 23,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : true
+    },
+    {
+      "name" : "height",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 24,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "dress_size",
+      "type" : "int",
+      "nullable" : true,
+      "position" : 25,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "hair_colour",
@@ -167,7 +241,8 @@
       "nullable" : true,
       "position" : 26,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : true
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "eye_colour",
@@ -175,7 +250,8 @@
       "nullable" : true,
       "position" : 27,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : true
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "verified",
@@ -183,7 +259,8 @@
       "nullable" : false,
       "position" : 28,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
     },
     {
       "name" : "email",
@@ -191,15 +268,8 @@
       "nullable" : false,
       "position" : 29,
       "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : true
-    },
-    {
-      "name" : "preference_list",
-      "type" : "string",
-      "nullable" : false,
-      "position" : 30,
-      "replaceNonSpecifiedValue" : false,
-      "convertNullToNone" : false
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
     }
   ]
 }

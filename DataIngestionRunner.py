@@ -6,7 +6,9 @@ import sys
 if __name__ == "__main__":
     dataAccess = DataIngestionImpl()
     feedAnalyser = FeedIngestionAnalyticsImpl()
-    dynamicLoad = CustomDataIngestionImpl()
+    dynamicLoad = CustomDataIngestionImpl(["ingestion-config-31-col.json",
+                                           "ingestion-config-30-col.json",
+                                           "ingestion-config-28-col.json"])
 
     if len(sys.argv) == 1:
         print("[ERROR] Invalid number of parameters. Type --help for more information")

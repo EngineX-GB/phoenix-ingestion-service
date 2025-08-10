@@ -1,0 +1,257 @@
+{
+  "version" : "1.0",
+  "columns" : [
+    {
+      "name" : "username",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 0,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "nationality",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 1,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "location",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 2,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rating",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 3,
+      "replaceNonSpecifiedValue" : true,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "age",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 4,
+      "replaceNonSpecifiedValue" : true,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_15_min",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 5,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_30_min",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 6,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_45_min",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 7,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_1_hour",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 8,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_1_50_hour",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 9,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_2_hour",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 10,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_2_50_hour",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 11,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_3_hour",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 12,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_3_50_hour",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 13,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_4_hour",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 14,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "rate_overnight",
+      "type" : "int",
+      "nullable" : false,
+      "position" : 15,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "telephone",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 16,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "url_page",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 17,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "refresh_time",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 18,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "user_id",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 19,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "image_available",
+      "type" : "boolean",
+      "nullable" : false,
+      "position" : 20,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "region",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 21,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "gender",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 22,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "member_since",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 23,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : false,
+      "convertUKDateToSqlDate" : true
+    },
+    {
+      "name" : "height",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 24,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "dress_size",
+      "type" : "int",
+      "nullable" : true,
+      "position" : 25,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "hair_colour",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 26,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
+    },
+    {
+      "name" : "eye_colour",
+      "type" : "string",
+      "nullable" : true,
+      "position" : 27,
+      "replaceNonSpecifiedValue" : false,
+      "convertNullToNone" : true,
+      "convertUKDateToSqlDate" : false
+    }
+  ]
+}

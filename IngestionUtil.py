@@ -32,3 +32,11 @@ class IngestionUtil:
         if value == "None":
             return None
         return value
+
+    @staticmethod
+    def convert_none_by_type(value : str, type : str):
+        if value == "None":
+            return None
+        if type == "int":
+            value = value.replace("+", "")
+            return int(value)
