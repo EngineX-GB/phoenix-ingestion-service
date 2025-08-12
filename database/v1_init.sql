@@ -237,29 +237,16 @@ create table if not exists tbl_time_series_data (
 DELIMITER //
 CREATE PROCEDURE CheckMaxDateAndAct()
 BEGIN
-    DECLARE max_table_date DATE;
-    DECLARE max_history_table_date DATE;
-    DECLARE today_date DATE;
-
-    -- Get the maximum date from the table
-    SELECT MAX(refresh_time) INTO max_table_date FROM tbl_client;
-    select MAX(refresh_time) into max_history_table_date from tbl_client_history;
-	select CURRENT_DATE into today_date;
-
-    -- Compare dates
-    IF max_table_date > max_history_table_date or max_history_table_date is null THEN
-        -- Perform your action here
-        insert into tbl_client_history (client_Oid, username, nationality, age, rating, rate_15_min, rate_30_min, rate_45_min, rate_1_hour,
-        rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone,
-        url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified,
-        email, preference_list, record_source)
-        (select oid, username, nationality, age, rating,
-       		rate_15_min, rate_30_min, rate_45_min, rate_1_hour,
-        	rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone,
-        	url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified,
-        	email, preference_list, record_source from tbl_client where date(refresh_time) = max_table_date);
-    END IF;
-    -- If dates are equal, do nothing
+    -- Perform your action here
+    insert into tbl_client_history (client_Oid, username, nationality, age, rating, rate_15_min, rate_30_min, rate_45_min, rate_1_hour,
+    rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone,
+    url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified,
+    email, preference_list, record_source)
+    (select oid, username, nationality, age, rating,
+   		rate_15_min, rate_30_min, rate_45_min, rate_1_hour,
+    	rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone,
+    	url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified,
+    	email, preference_list, record_source from tbl_client_temp);
 end; //
 
 
@@ -654,8 +641,10 @@ begin
 	set @new_records = ROW_COUNT();
 
 
-	-- flush all records in the temp table
+    -- add records from the temp table into the tbl_client_history table for audit purposes.
+    call CheckMaxDateAndAct();
 
+	-- flush all records in the temp table
 	delete from tbl_client_temp;
 	set @delete_temp_records = ROW_COUNT();
 
