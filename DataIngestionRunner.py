@@ -32,3 +32,7 @@ if __name__ == "__main__":
         elif sys.argv[2] == "--dynamic":
             folder_path = sys.argv[3]
             dynamicLoad.load_feed_data_by_directory(folder_path)
+        else:
+            print("[ERROR] Unknown cmd flag " + sys.argv[2])
+    else:
+        print("[ERROR] Unknown flag " + sys.argv[1])

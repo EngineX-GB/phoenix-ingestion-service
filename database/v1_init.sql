@@ -75,6 +75,45 @@ create table if not exists tbl_client (
 );
 
 
+create table if not exists tbl_client_history (
+	oid integer not null auto_increment,
+	client_oid integer,
+	username text,
+	nationality text,
+	location text,
+	rating integer,
+	age integer,
+	rate_15_min integer,
+	rate_30_min integer,
+	rate_45_min integer,
+	rate_1_hour integer,
+	rate_1_50_hour integer,
+	rate_2_hour integer,
+	rate_2_50_hour integer,
+	rate_3_hour integer,
+	rate_3_50_hour integer,
+	rate_4_hour integer,
+	rate_overnight integer,
+	telephone text,
+	url_page text,
+	refresh_time datetime,
+	user_id varchar(20),
+	image_available boolean,
+	region text,
+	gender text,
+	member_since date,
+	height decimal(3,2),
+	dress_size integer,
+	hair_colour text,
+	eye_colour text,
+	verified boolean,
+	email varchar(255),
+	preference_list text,
+	record_source varchar(15),
+	primary key (oid)
+);
+
+
 create or replace view vw_view_new_clients as
 	select * from tbl_client where user_id in (select user_id from tbl_new_clients) order by rating desc;
 
@@ -119,10 +158,6 @@ create table if not exists tbl_client_temp (
 
 create index idx_client_user_id on tbl_client(user_id);
 create index idx_client_temp_user_id on tbl_client_temp(user_id);
-
--- 10-08-25 - create a tbl_client_history table from tbl_client_temp table
-create table tbl_client_history as (select * from tbl_client_temp limit 0);
-
 
 create table if not exists tbl_client_price_time_series_tracking (
 	oid integer not null auto_increment,
@@ -198,6 +233,38 @@ create table if not exists tbl_time_series_data (
 	region varchar(200),
 	primary key (oid)
 );
+
+DELIMITER //
+CREATE PROCEDURE CheckMaxDateAndAct()
+BEGIN
+    DECLARE max_table_date DATE;
+    DECLARE max_history_table_date DATE;
+    DECLARE today_date DATE;
+
+    -- Get the maximum date from the table
+    SELECT MAX(refresh_time) INTO max_table_date FROM tbl_client;
+    select MAX(refresh_time) into max_history_table_date from tbl_client_history;
+	select CURRENT_DATE into today_date;
+
+    -- Compare dates
+    IF max_table_date > max_history_table_date or max_history_table_date is null THEN
+        -- Perform your action here
+        insert into tbl_client_history (client_Oid, username, nationality, age, rating, rate_15_min, rate_30_min, rate_45_min, rate_1_hour,
+        rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone,
+        url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified,
+        email, preference_list, record_source)
+        (select oid, username, nationality, age, rating,
+       		rate_15_min, rate_30_min, rate_45_min, rate_1_hour,
+        	rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone,
+        	url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified,
+        	email, preference_list, record_source from tbl_client where date(refresh_time) = max_table_date);
+    END IF;
+    -- If dates are equal, do nothing
+end; //
+
+
+
+
 
 delimiter //
 create procedure prc_clean_up_time_series_data()
