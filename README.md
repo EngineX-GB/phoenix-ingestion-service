@@ -4,7 +4,9 @@ Run pip commands:
 
 `pip install mysql-connector-python`
 `pip install pyinstaller`
+`pip install fastapi uvicorn python-multipart`
 `C:\Users\Dell\AppData\Local\Programs\Python\Python310\python.exe -m pip install --upgrade pip`
+
 
 use pyinstaller:
 `pyinstaller --onefile --hidden-import mysql.connector --hidden-import=uvicorn --hidden-import=fastapi --hidden-import=main  DataIngestionRunner.py`
