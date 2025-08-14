@@ -1,3 +1,4 @@
+import io
 import os
 from datetime import datetime
 
@@ -24,9 +25,19 @@ class DataIngestionImpl(IDataIngestion):
                 csv_read_rows = IngestionUtil.get_csv_rows(feed_file)
                 self.populate_staging_data(csv_read_rows)
             except UnicodeDecodeError:
-                print("[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file [ " + feed_file + " ]")
+                print(
+                    "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file [ " + feed_file + " ]")
 
-    def load_feed_data_by_directory(self, directory_path : str):
+    def load_feed_data_via_text_wrapper(self, feed_files: list[io.TextIOWrapper]):
+        for feed_file in feed_files:
+            try:
+                csv_read_rows = IngestionUtil.get_csv_rows_via_text_wrapper(feed_file)
+                self.populate_staging_data(csv_read_rows)
+            except UnicodeDecodeError:
+                print(
+                    "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file in text wrapper")
+
+    def load_feed_data_by_directory(self, directory_path: str):
         pattern = re.compile("^\\d{4}-\\d{2}-\\d{2}$")
         valid_subdirectories = []
         if not os.path.exists(directory_path):
@@ -96,39 +107,44 @@ class DataIngestionImpl(IDataIngestion):
                                        "VALUES "
                                        "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         for row in csv_row:
-            value_client_row_ = (row.__getitem__(0),  # username
-                                 row.__getitem__(1),  # nationality
-                                 row.__getitem__(2),  # location
-                                 int(row.__getitem__(3)),  # rating
-                                 int(IngestionUtil.parse_not_specified_value(row.__getitem__(4))),  # age
-                                 int(row.__getitem__(5)),  # 15
-                                 int(row.__getitem__(6)),  # 30
-                                 int(row.__getitem__(7)),  # 45
-                                 int(row.__getitem__(8)),  # 1
-                                 int(row.__getitem__(9)),  # 1.5
-                                 int(row.__getitem__(10)),  # 2
-                                 int(row.__getitem__(11)),  # 2.5
-                                 int(row.__getitem__(12)),  # 3
-                                 int(row.__getitem__(13)),  # 3.5
-                                 int(row.__getitem__(14)),  # 4
-                                 int(row.__getitem__(15)),  # ov
-                                 row.__getitem__(16),  # tel
-                                 row.__getitem__(17),  # url
-                                 row.__getitem__(18),  # refresh_time
-                                 row.__getitem__(19),  # userid
-                                 bool(row.__getitem__(20)),  # imageAvailable
-                                 row.__getitem__(21),  # region
-                                 IngestionUtil.convert_none(row.__getitem__(22)),  # gender
-                                 datetime.strptime(row.__getitem__(23), '%d/%m/%Y').strftime('%Y-%m-%d'), # member since (needs to be formatted)
-                                 IngestionUtil.convert_none(row.__getitem__(24)),  # height (needs to be converted)
-                                 IngestionUtil.convert_none_by_type(row.__getitem__(25), "int"),  # dress size (needs to be converted)
-                                 IngestionUtil.convert_none(row.__getitem__(26)),  # haircol
-                                 IngestionUtil.convert_none(row.__getitem__(27)),  # eyecol
-                                 bool(row.__getitem__(28)),  # verified
-                                 IngestionUtil.convert_none(row.__getitem__(29)),  # email
-                                 row.__getitem__(30),  # preference_list
-                                 "FEED_FILE")
-            mysqlcursor.execute(insert_client_row_statement, value_client_row_)
+            try:
+                value_client_row_ = (row.__getitem__(0),  # username
+                                     row.__getitem__(1),  # nationality
+                                     row.__getitem__(2),  # location
+                                     int(row.__getitem__(3)),  # rating
+                                     int(IngestionUtil.parse_not_specified_value(row.__getitem__(4))),  # age
+                                     int(row.__getitem__(5)),  # 15
+                                     int(row.__getitem__(6)),  # 30
+                                     int(row.__getitem__(7)),  # 45
+                                     int(row.__getitem__(8)),  # 1
+                                     int(row.__getitem__(9)),  # 1.5
+                                     int(row.__getitem__(10)),  # 2
+                                     int(row.__getitem__(11)),  # 2.5
+                                     int(row.__getitem__(12)),  # 3
+                                     int(row.__getitem__(13)),  # 3.5
+                                     int(row.__getitem__(14)),  # 4
+                                     int(row.__getitem__(15)),  # ov
+                                     row.__getitem__(16),  # tel
+                                     row.__getitem__(17),  # url
+                                     row.__getitem__(18),  # refresh_time
+                                     row.__getitem__(19),  # userid
+                                     bool(row.__getitem__(20)),  # imageAvailable
+                                     row.__getitem__(21),  # region
+                                     IngestionUtil.convert_none(row.__getitem__(22)),  # gender
+                                     datetime.strptime(row.__getitem__(23), '%d/%m/%Y').strftime('%Y-%m-%d'),
+                                     # member since (needs to be formatted)
+                                     IngestionUtil.convert_none(row.__getitem__(24)),  # height (needs to be converted)
+                                     IngestionUtil.convert_none_by_type(row.__getitem__(25), "int"),
+                                     # dress size (needs to be converted)
+                                     IngestionUtil.convert_none(row.__getitem__(26)),  # haircol
+                                     IngestionUtil.convert_none(row.__getitem__(27)),  # eyecol
+                                     bool(row.__getitem__(28)),  # verified
+                                     IngestionUtil.convert_none(row.__getitem__(29)),  # email
+                                     row.__getitem__(30),  # preference_list
+                                     "FEED_FILE")
+                mysqlcursor.execute(insert_client_row_statement, value_client_row_)
+            except (ValueError, IndexError) as e:
+                print("[WARN] Unable to correctly parse row  [" + str(row) + "] exception = " + str(e))
 
         mydb.commit()
         # after the loads on the temp table, run the store proc to put it in the main table

@@ -1,8 +1,17 @@
 import csv
+import io
 import os
 
 
 class IngestionUtil:
+
+    def get_csv_rows_via_text_wrapper(text_wrapper:io.TextIOWrapper):
+        datarows = []
+        reader = csv.reader(text_wrapper, delimiter='|')
+        for row in reader:
+            datarows.append(row)
+        return datarows
+
 
     @staticmethod
     def get_csv_rows(filename):
