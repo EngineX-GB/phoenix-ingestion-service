@@ -2,7 +2,7 @@ import io
 import os
 from datetime import datetime
 
-from IDataIngestion import IDataIngestion
+from controller.IDataIngestion import IDataIngestion
 import mysql.connector
 import re
 
