@@ -13,12 +13,16 @@ class IngestionUtil:
         return datarows
 
     @staticmethod
-    def check_latest_entry_in_datastore():
+    def fix_encoded_string(text):
+        return text.encode('latin1').decode('utf-8')
+
+    @staticmethod
+    def check_latest_entry_in_datastore(property_manager):
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="db_phoenix"
+            host = property_manager.get_datasource_url(),
+            user = property_manager.get_datasource_username(),
+            password = property_manager.get_datasource_password(),
+            database = property_manager.get_datasource_name()
         )
         cursor = mydb.cursor()
         query = "select max(date(refresh_time)) from tbl_client;"

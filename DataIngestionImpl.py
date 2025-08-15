@@ -11,7 +11,8 @@ from IngestionUtil import IngestionUtil
 
 class DataIngestionImpl(IDataIngestion):
 
-    def __init__(self):
+    def __init__(self, property_manager):
+        self.property_manager = property_manager
         pass
 
     # load the feed file into the staging table and
@@ -85,10 +86,10 @@ class DataIngestionImpl(IDataIngestion):
 
     def populate_staging_data(self, csv_row: list):
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="db_phoenix"
+            host = self.property_manager.get_datasource_url(),
+            user = self.property_manager.get_datasource_username(),
+            password = self.property_manager.get_datasource_password(),
+            database = self.property_manager.get_datasource_name()
         )
 
         # print("[INFO] Connected to data source : mysql")
@@ -108,7 +109,7 @@ class DataIngestionImpl(IDataIngestion):
                                        "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         for row in csv_row:
             try:
-                value_client_row_ = (row.__getitem__(0),  # username
+                value_client_row_ = (IngestionUtil.fix_encoded_string(row.__getitem__(0)),  # username
                                      row.__getitem__(1),  # nationality
                                      row.__getitem__(2),  # location
                                      int(row.__getitem__(3)),  # rating

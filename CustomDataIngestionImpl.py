@@ -10,8 +10,8 @@ from IngestionUtil import IngestionUtil
 
 class CustomDataIngestionImpl(DataIngestionImpl):
 
-    def __init__(self, column_configfile_list):
-        super().__init__()
+    def __init__(self, column_configfile_list, property_manager):
+        super().__init__(property_manager)
         self.column_configfile_list = column_configfile_list
         self.dict = self.build_column_count_to_config_dictionary(self.column_configfile_list)
         self.debug = False

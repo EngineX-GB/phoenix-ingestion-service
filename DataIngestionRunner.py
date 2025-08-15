@@ -8,10 +8,12 @@ import os
 import uvicorn
 
 from IngestionUtil import IngestionUtil
+from PropertyManager import PropertyManager
 
 if __name__ == "__main__":
-    dataAccess = DataIngestionImpl()
-    feedAnalyser = FeedIngestionAnalyticsImpl()
+    propertyManager = PropertyManager()
+    dataAccess = DataIngestionImpl(propertyManager)
+    feedAnalyser = FeedIngestionAnalyticsImpl(propertyManager)
 
     internal_flags = ["--multiprocessing-fork"]
     if any(flag in sys.argv for flag in internal_flags):
@@ -23,7 +25,7 @@ if __name__ == "__main__":
         elif sys.argv[1] == "--help":
             print("[INFO] Help Manual added here")
         elif sys.argv[1] == "--check-max-date":
-            max_date = IngestionUtil.check_latest_entry_in_datastore()
+            max_date = IngestionUtil.check_latest_entry_in_datastore(propertyManager)
             print("[INFO] Date of latest entry in datastore : " + str(max_date))
         elif sys.argv[1] == "--service":
             print("[INFO] Running Ingestion Service....")
@@ -51,7 +53,7 @@ if __name__ == "__main__":
                     if not os.path.exists(mapper):
                         raise RuntimeError("Mapper file : " + mapper + " does not exist")
                 folder_path = sys.argv[3]
-                dynamicLoad = CustomDataIngestionImpl(config_mappers)
+                dynamicLoad = CustomDataIngestionImpl(config_mappers, propertyManager)
                 dynamicLoad.load_feed_data_by_directory(folder_path)
             else:
                 print("[ERROR] Unknown cmd flag " + sys.argv[2])
