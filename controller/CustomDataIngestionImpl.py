@@ -3,9 +3,9 @@ from datetime import datetime
 import mysql.connector
 import json
 
-from Column import Column
-from DataIngestionImpl import DataIngestionImpl
-from IngestionUtil import IngestionUtil
+from model.Column import Column
+from controller.DataIngestionImpl import DataIngestionImpl
+from util.IngestionUtil import IngestionUtil
 
 
 class CustomDataIngestionImpl(DataIngestionImpl):

@@ -6,7 +6,7 @@ from IDataIngestion import IDataIngestion
 import mysql.connector
 import re
 
-from IngestionUtil import IngestionUtil
+from util.IngestionUtil import IngestionUtil
 
 
 class DataIngestionImpl(IDataIngestion):

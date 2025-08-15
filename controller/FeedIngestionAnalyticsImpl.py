@@ -1,8 +1,5 @@
-import os
-import re
-
-from DataIngestionImpl import DataIngestionImpl
-from IngestionUtil import IngestionUtil
+from controller.DataIngestionImpl import DataIngestionImpl
+from util.IngestionUtil import IngestionUtil
 
 
 class FeedIngestionAnalyticsImpl(DataIngestionImpl):

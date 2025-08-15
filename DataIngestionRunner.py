@@ -1,14 +1,14 @@
-from CustomDataIngestionImpl import CustomDataIngestionImpl
-from FeedIngestionAnalyticsImpl import FeedIngestionAnalyticsImpl
-from DataIngestionImpl import DataIngestionImpl
+from controller.CustomDataIngestionImpl import CustomDataIngestionImpl
+from controller.FeedIngestionAnalyticsImpl import FeedIngestionAnalyticsImpl
+from controller.DataIngestionImpl import DataIngestionImpl
 import multiprocessing
 
 import sys
 import os
 import uvicorn
 
-from IngestionUtil import IngestionUtil
-from PropertyManager import PropertyManager
+from util.IngestionUtil import IngestionUtil
+from controller.PropertyManager import PropertyManager
 
 if __name__ == "__main__":
     propertyManager = PropertyManager()

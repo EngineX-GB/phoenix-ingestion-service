@@ -3,8 +3,7 @@ import zipfile
 
 from fastapi import FastAPI, UploadFile, File
 from starlette.responses import JSONResponse
-from DataIngestionImpl import DataIngestionImpl
-from IngestionUtil import IngestionUtil
+from controller.DataIngestionImpl import DataIngestionImpl
 
 app = FastAPI()
 data_ingestion = DataIngestionImpl()
