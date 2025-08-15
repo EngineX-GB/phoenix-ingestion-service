@@ -7,6 +7,8 @@ import sys
 import os
 import uvicorn
 
+from IngestionUtil import IngestionUtil
+
 if __name__ == "__main__":
     dataAccess = DataIngestionImpl()
     feedAnalyser = FeedIngestionAnalyticsImpl()
@@ -20,6 +22,9 @@ if __name__ == "__main__":
             print("[ERROR] Invalid number of parameters. Type --help for more information")
         elif sys.argv[1] == "--help":
             print("[INFO] Help Manual added here")
+        elif sys.argv[1] == "--check-max-date":
+            max_date = IngestionUtil.check_latest_entry_in_datastore()
+            print("[INFO] Date of latest entry in datastore : " + str(max_date))
         elif sys.argv[1] == "--service":
             print("[INFO] Running Ingestion Service....")
             print("[WARN] This feature is not supported yet.")

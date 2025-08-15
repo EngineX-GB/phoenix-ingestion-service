@@ -1,7 +1,7 @@
 import csv
 import io
 import os
-
+import mysql.connector
 
 class IngestionUtil:
 
@@ -11,6 +11,24 @@ class IngestionUtil:
         for row in reader:
             datarows.append(row)
         return datarows
+
+    @staticmethod
+    def check_latest_entry_in_datastore():
+        mydb = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="root",
+            database="db_phoenix"
+        )
+        cursor = mydb.cursor()
+        query = "select max(date(refresh_time)) from tbl_client;"
+        cursor.execute(query)
+        result = cursor.fetchone()
+
+        max_date = result[0] if result[0] is not None else None
+        cursor.close()
+        mydb.close()
+        return max_date
 
 
     @staticmethod
