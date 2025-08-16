@@ -33,7 +33,7 @@ if __name__ == "__main__":
         elif sys.argv[1] == "--api":
             print("[INFO] Starting FastAPI server...")
             multiprocessing.freeze_support()
-            uvicorn.run("main:app", host="127.0.0.1", port=8000)
+            uvicorn.run("api.main:app", host="127.0.0.1", port=8000)
         elif sys.argv[1] == "--cmd":
             print("[INFO] Running Ingestion Service....")
             if sys.argv[2] == "--batch":

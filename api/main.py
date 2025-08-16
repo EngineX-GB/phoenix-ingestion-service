@@ -4,9 +4,11 @@ import zipfile
 from fastapi import FastAPI, UploadFile, File
 from starlette.responses import JSONResponse
 from controller.DataIngestionImpl import DataIngestionImpl
+from controller.PropertyManager import PropertyManager
 
 app = FastAPI()
-data_ingestion = DataIngestionImpl()
+property_manager = PropertyManager()
+data_ingestion = DataIngestionImpl(property_manager)
 
 
 @app.get("/")
