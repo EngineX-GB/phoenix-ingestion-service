@@ -2,6 +2,9 @@ import io
 import os
 from datetime import datetime
 
+from mysql.connector import DataError
+from _mysql_connector import MySQLInterfaceError
+
 from controller.IDataIngestion import IDataIngestion
 import mysql.connector
 import re
@@ -24,7 +27,7 @@ class DataIngestionImpl(IDataIngestion):
             print("[INFO] Loading data file : " + feed_file)
             try:
                 csv_read_rows = IngestionUtil.get_csv_rows(feed_file)
-                self.populate_staging_data(csv_read_rows)
+                self.populate_staging_data(csv_read_rows, feed_file)
             except UnicodeDecodeError:
                 print(
                     "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file [ " + feed_file + " ]")
@@ -33,7 +36,7 @@ class DataIngestionImpl(IDataIngestion):
         for feed_file in feed_files:
             try:
                 csv_read_rows = IngestionUtil.get_csv_rows_via_text_wrapper(feed_file)
-                self.populate_staging_data(csv_read_rows)
+                self.populate_staging_data(csv_read_rows, "")   # todo
             except UnicodeDecodeError:
                 print(
                     "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file in text wrapper")
@@ -84,7 +87,7 @@ class DataIngestionImpl(IDataIngestion):
             files.sort()
             self.load_feed_data(files)
 
-    def populate_staging_data(self, csv_row: list):
+    def populate_staging_data(self, csv_row: list, feed_file: str):
         mydb = mysql.connector.connect(
             host = self.property_manager.get_datasource_url(),
             user = self.property_manager.get_datasource_username(),
@@ -144,8 +147,8 @@ class DataIngestionImpl(IDataIngestion):
                                      row.__getitem__(30),  # preference_list
                                      "FEED_FILE")
                 mysqlcursor.execute(insert_client_row_statement, value_client_row_)
-            except (ValueError, IndexError) as e:
-                print("[WARN] Unable to correctly parse row  [" + str(row) + "] exception = " + str(e))
+            except (ValueError, IndexError, DataError, MySQLInterfaceError) as e:
+                print("[WARN] Unable to correctly parse row in file[" + feed_file + "] row=[" + str(row) + "] exception = " + str(e))
 
         mydb.commit()
         # after the loads on the temp table, run the store proc to put it in the main table

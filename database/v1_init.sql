@@ -70,6 +70,7 @@ create table if not exists tbl_client (
 	verified boolean,
 	email varchar(255),
 	preference_list text,
+	ethnicity varchar(20),
 	record_source varchar(15),
 	primary key (oid)
 );
@@ -109,6 +110,7 @@ create table if not exists tbl_client_history (
 	verified boolean,
 	email varchar(255),
 	preference_list text,
+	ethnicity varchar(20),
 	record_source varchar(15),
 	primary key (oid)
 );
@@ -152,6 +154,7 @@ create table if not exists tbl_client_temp (
 	verified boolean,
 	email varchar(255),
 	preference_list text,
+	ethnicity varchar(20),
 	record_source varchar(15),
 	primary key (oid)
 );
@@ -241,12 +244,12 @@ BEGIN
     insert into tbl_client_history (client_Oid, username, nationality, age, rating, rate_15_min, rate_30_min, rate_45_min, rate_1_hour,
     rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone,
     url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified,
-    email, preference_list, record_source)
+    email, preference_list, ethnicity, record_source)
     (select oid, username, nationality, age, rating,
    		rate_15_min, rate_30_min, rate_45_min, rate_1_hour,
     	rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone,
     	url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified,
-    	email, preference_list, record_source from tbl_client_temp);
+    	email, preference_list, ethnicity, record_source from tbl_client_temp);
 end; //
 
 
@@ -329,6 +332,7 @@ set d2.username = d1.username,
     d2.verified = d1.verified,
     d2.email = d1.email,
     d2.preference_list = d1.preference_list,
+    d2.ethnicity = d1.ethnicity,
     d2.record_source = d1.record_source;
 	set @updated_records = ROW_COUNT();
 
@@ -347,8 +351,8 @@ set d2.username = d1.username,
 
 	-- insert new records from temp to master table
 
-	insert into tbl_client (username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_45_min, rate_1_hour, rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified, email, preference_list, record_source)
-			(select username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_45_min, rate_1_hour, rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified, email, preference_list, record_source from tbl_client_temp where user_id not in (select user_id from tbl_client));
+	insert into tbl_client (username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_45_min, rate_1_hour, rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified, email, preference_list, ethnicity, record_source)
+			(select username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_45_min, rate_1_hour, rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified, email, preference_list, ethnicity, record_source from tbl_client_temp where user_id not in (select user_id from tbl_client));
 	set @new_records = ROW_COUNT();
 
 	-- flush all records in the temp table
@@ -579,6 +583,7 @@ begin
 		verified boolean,
 	    email varchar(255),
 	    preference_list text,
+	    ethnicity varchar(20),
 	    record_source varchar(15)
 		);
 
@@ -615,6 +620,7 @@ begin
 			d2.verified = d1.verified,
 			d2.email = d1.email,
 			d2.preference_list = d1.preference_list,
+			d2.ethnicity = d1.ethnicity,
 			d2.record_source = d1.record_source;
 
 			set @updated_records = ROW_COUNT();
@@ -636,8 +642,8 @@ begin
 
 	-- insert new records from temp to master table
 
-	insert into tbl_client (username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_45_min, rate_1_hour, rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified, email, preference_list, record_source)
-			(select username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_45_min, rate_1_hour, rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified, email, preference_list, record_source from tbl_client_temp where user_id not in (select user_id from tbl_client));
+	insert into tbl_client (username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_45_min, rate_1_hour, rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified, email, preference_list, ethnicity, record_source)
+			(select username, nationality, location, rating, age, rate_15_min, rate_30_min, rate_45_min, rate_1_hour, rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, height, dress_size, hair_colour, eye_colour, verified, email, preference_list, ethnicity, record_source from tbl_client_temp where user_id not in (select user_id from tbl_client));
 	set @new_records = ROW_COUNT();
 
 

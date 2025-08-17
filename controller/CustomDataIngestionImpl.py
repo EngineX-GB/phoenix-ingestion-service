@@ -3,6 +3,9 @@ from datetime import datetime
 import mysql.connector
 import json
 
+from _mysql_connector import MySQLInterfaceError
+from mysql.connector import DataError
+
 from model.Column import Column
 from controller.DataIngestionImpl import DataIngestionImpl
 from util.IngestionUtil import IngestionUtil
@@ -26,7 +29,7 @@ class CustomDataIngestionImpl(DataIngestionImpl):
                 f.close()
         return column_count_dictionary
 
-    def populate_staging_data(self, csv_row: list):
+    def populate_staging_data(self, csv_row: list, feed_file):
 
         mydb = mysql.connector.connect(
             host="localhost",
@@ -99,8 +102,8 @@ class CustomDataIngestionImpl(DataIngestionImpl):
                 mysqlcursor.execute(insert_client_row_statement, parameter_object_tuple)
                 # reset the parameter object list
                 parameter_object_list.clear()
-            except (ValueError, IndexError) as e:
-                print("[WARN] Unable to correctly parse row  [" + str(row) + "] exception = " + str(e))
+            except (ValueError, IndexError, DataError, MySQLInterfaceError) as e:
+                print("[WARN] Unable to correctly parse row in file [ " + feed_file + "] row=[" + str(row) + "] exception=[" + str(e) + "]")
                 # try and delete the previously added object in the parameter_object_tuple
                 parameter_object_list.clear()   # to clear the corrupted entry. Important!!
                 continue
