@@ -24,6 +24,8 @@ if __name__ == "__main__":
             print("[ERROR] Invalid number of parameters. Type --help for more information")
         elif sys.argv[1] == "--help":
             print("[INFO] Help Manual added here")
+        elif sys.argv[1] == "--version":
+            print("[INFO] Version : " + IngestionUtil.app_version())
         elif sys.argv[1] == "--check-max-date":
             max_date = IngestionUtil.check_latest_entry_in_datastore(propertyManager)
             print("[INFO] Date of latest entry in datastore : " + str(max_date))

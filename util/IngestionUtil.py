@@ -1,8 +1,10 @@
 import csv
 import io
+import json
 import os
-import mysql.connector
+import sys
 
+import mysql.connector
 class IngestionUtil:
 
     def get_csv_rows_via_text_wrapper(text_wrapper:io.TextIOWrapper):
@@ -15,6 +17,18 @@ class IngestionUtil:
     @staticmethod
     def fix_encoded_string(text):
         return text.encode('latin1').decode('utf-8')
+
+    @staticmethod
+    def resource_path(relative_path):
+        """ Get absolute path to resource, works for dev and for PyInstaller """
+        base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+        return os.path.join(base_path, relative_path)
+
+    @staticmethod
+    def app_version():
+        with open(IngestionUtil.resource_path("version.json")) as file:
+            app_data = json.load(file)
+            return app_data["version"]
 
     @staticmethod
     def check_latest_entry_in_datastore(property_manager):
