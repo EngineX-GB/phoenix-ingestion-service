@@ -1,0 +1,53 @@
+--version                           version of the service
+
+--check-max-date                    Get the date of the latest load in the data store
+
+--api                               Run Ingestion as a service
+
+--cmd --batch <feeds_folder>        Load data from feed files.
+                                    The directory must have subdirectories that are named in date formats.
+                                    Each subdirectory must have the feed files in the correct naming format.
+                                    e.g.
+
+                                    --cmd --batch "C:/feeds"
+                                    where "C:/feeds" contains subdirectories: "2025-01-01", "2025-01-02"....etc.
+
+--cmd --dynamic <feeds_folder> <config_files_list>
+                                    Load feed data based on varying columns that are defined by config files.
+
+                                    <feeds_folder>:
+
+                                    The directory must have subdirectories that are named in date formats.
+                                    Each subdirectory must have the feed files in the correct naming format.
+                                    e.g.
+
+
+                                    <config_files_list>:
+
+                                    A list of config files that contain the details for what data to load in which
+                                    column.
+
+                                    Full example of the command:
+
+                                    --cmd --dynamic "C:\Feeds" "ingestion-col-1.json,ingestion-col-2.json"
+
+                                    where "C:/feeds" contains subdirectories: "2025-01-01", "2025-01-02"....etc.
+
+ --cmd --anaylse <feeds_folder>     Does not load any data, but analyses the feeds in the subdirectories.
+
+                                    The directory must have subdirectories that are named in date formats.
+                                    Each subdirectory must have the feed files in the correct naming format.
+                                    e.g.
+
+                                    --cmd --analyse "C:/feeds"
+                                    where "C:/feeds" contains subdirectories: "2025-01-01", "2025-01-02"....etc.
+
+ --cmd --custom-load <dated-folder> To load a set of feed files in the dated folder. This folder must contain no
+                                    subdirectories and only contain the feed files.
+
+                                    e.g.
+
+                                    --cmd --custom-load "C:\feeds\2025-01-01"
+
+                                    where "C:\feeds\2025-01-01" contains text files that contain the data required to be
+                                    loaded.

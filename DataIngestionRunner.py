@@ -23,7 +23,7 @@ if __name__ == "__main__":
         if len(sys.argv) == 1:
             print("[ERROR] Invalid number of parameters. Type --help for more information")
         elif sys.argv[1] == "--help":
-            print("[INFO] Help Manual added here")
+            print(IngestionUtil.read_man_page())
         elif sys.argv[1] == "--version":
             print("[INFO] Version : " + IngestionUtil.app_version())
         elif sys.argv[1] == "--check-max-date":

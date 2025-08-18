@@ -18,6 +18,7 @@ class IngestionUtil:
     def fix_encoded_string(text):
         return text.encode('latin1').decode('utf-8')
 
+    """ Only to be used for defining the resource path for pyinstaller"""
     @staticmethod
     def resource_path(relative_path):
         """ Get absolute path to resource, works for dev and for PyInstaller """
@@ -29,6 +30,13 @@ class IngestionUtil:
         with open(IngestionUtil.resource_path("version.json")) as file:
             app_data = json.load(file)
             return app_data["version"]
+
+    @staticmethod
+    def read_man_page():
+        with open(IngestionUtil.resource_path("man-page.txt")) as file:
+            man_page = file.read()
+            file.close()
+            return man_page
 
     @staticmethod
     def check_latest_entry_in_datastore(property_manager):
