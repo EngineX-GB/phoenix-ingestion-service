@@ -36,7 +36,7 @@ class DataIngestionImpl(IDataIngestion):
         print("[INFO] Loading data file : " + file_name)
         try:
             csv_read_rows = IngestionUtil.get_csv_rows_via_text_wrapper(buffer_content)
-            self.populate_staging_data(csv_read_rows, file_name)   # todo
+            self.populate_staging_data(csv_read_rows, file_name)
         except UnicodeDecodeError:
             print(
                 "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file in text wrapper")
