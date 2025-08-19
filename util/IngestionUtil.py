@@ -60,7 +60,7 @@ class IngestionUtil:
     @staticmethod
     def get_csv_rows(filename):
         datarows = []
-        with open(filename) as file:
+        with open(filename, encoding='utf-8') as file:
             rows = csv.reader(file, delimiter='|')
             for row in rows:
                 datarows.append(row)

@@ -112,9 +112,9 @@ class DataIngestionImpl(IDataIngestion):
                                        "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         for row in csv_row:
             try:
-                value_client_row_ = (IngestionUtil.fix_encoded_string(row.__getitem__(0)),  # username
+                value_client_row_ = (row.__getitem__(0),  # username
                                      row.__getitem__(1),  # nationality
-                                     IngestionUtil.fix_encoded_string(row.__getitem__(2)),  # location
+                                     row.__getitem__(2),  # location
                                      int(row.__getitem__(3)),  # rating
                                      int(IngestionUtil.parse_not_specified_value(row.__getitem__(4))),  # age
                                      int(row.__getitem__(5)),  # 15
