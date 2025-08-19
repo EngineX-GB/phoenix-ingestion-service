@@ -32,10 +32,10 @@ class CustomDataIngestionImpl(DataIngestionImpl):
     def populate_staging_data(self, csv_row: list, feed_file):
 
         mydb = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="root",
-            database="db_phoenix"
+            host = self.property_manager.get_datasource_url(),
+            user = self.property_manager.get_datasource_username(),
+            password = self.property_manager.get_datasource_password(),
+            database = self.property_manager.get_datasource_name()
         )
 
         # print("[INFO] Connected to data source : mysql")
