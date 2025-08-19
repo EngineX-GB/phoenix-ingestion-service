@@ -4,6 +4,14 @@
 
 --api                               Run Ingestion as a service
 
+                                    use a REST client to set the following:
+
+                                    Method: POST
+                                    URL: <hostname>:8000/upload
+                                    Body: Multi-part Form
+                                    Property: "file"
+                                    Value: Uploaded zip file containing dated subdirectories
+
 --cmd --batch <feeds_folder>        Load data from feed files.
                                     The directory must have subdirectories that are named in date formats.
                                     Each subdirectory must have the feed files in the correct naming format.
