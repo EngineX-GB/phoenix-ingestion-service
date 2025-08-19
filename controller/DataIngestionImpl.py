@@ -32,14 +32,14 @@ class DataIngestionImpl(IDataIngestion):
                 print(
                     "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file [ " + feed_file + " ]")
 
-    def load_feed_data_via_text_wrapper(self, feed_files: list[io.TextIOWrapper]):
-        for feed_file in feed_files:
-            try:
-                csv_read_rows = IngestionUtil.get_csv_rows_via_text_wrapper(feed_file)
-                self.populate_staging_data(csv_read_rows, "")   # todo
-            except UnicodeDecodeError:
-                print(
-                    "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file in text wrapper")
+    def load_feed_data_via_text_wrapper(self, file_name, buffer_content):
+        print("[INFO] Loading data file : " + file_name)
+        try:
+            csv_read_rows = IngestionUtil.get_csv_rows_via_text_wrapper(buffer_content)
+            self.populate_staging_data(csv_read_rows, file_name)   # todo
+        except UnicodeDecodeError:
+            print(
+                "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file in text wrapper")
 
     def load_feed_data_by_directory(self, directory_path: str):
         pattern = re.compile("^\\d{4}-\\d{2}-\\d{2}$")

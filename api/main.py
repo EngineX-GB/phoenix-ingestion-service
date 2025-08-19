@@ -57,11 +57,9 @@ async def upload_file(file: UploadFile = File(...)):
         for k, v in files_dict.items():
             # get the list of files for the selected (dated) subdirectory
             # and pass this into the loader
-            content_object_list = []
             for file_name in v:
                 with zip_ref.open(file_name) as f:
-                    with io.TextIOWrapper(f, encoding="utf-8") as text_file:
-                        content_object_list.append(text_file)
-                        data_ingestion.load_feed_data_via_text_wrapper(content_object_list)
-            content_object_list.clear()
+                    with io.TextIOWrapper(f, encoding="utf-8") as buffer_content:
+                        data_ingestion.load_feed_data_via_text_wrapper(file_name, buffer_content)
+
     return {"files": results}
