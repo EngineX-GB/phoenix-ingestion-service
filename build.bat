@@ -16,4 +16,4 @@ pip install pyinstaller
 @echo on
 
 rem build the executable
-pyinstaller --onefile --add-data="version.json;." --add-data="man-page.txt;." --hidden-import mysql.connector --hidden-import=uvicorn --hidden-import=fastapi --hidden-import=main  DataIngestionRunner.py
+pyinstaller --onefile --add-data="version.json;." --add-data="man-page.txt;." --add-data="api;api" --hidden-import mysql.connector --hidden-import=uvicorn --hidden-import=fastapi --hidden-import=main  DataIngestionRunner.py
