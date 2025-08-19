@@ -106,15 +106,15 @@ class DataIngestionImpl(IDataIngestion):
                                        "rate_1_50_hour, rate_2_hour, rate_2_50_hour, rate_3_hour, rate_3_50_hour, rate_4_hour, "
                                        "rate_overnight, telephone, url_page, refresh_time, user_id, image_available, region, gender, member_since, "
                                        "height, dress_size, hair_colour, eye_colour, verified, "
-                                       "email, preference_list, record_source"
+                                       "email, preference_list, ethnicity, record_source"
                                        ") "
                                        "VALUES "
-                                       "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
+                                       "(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)")
         for row in csv_row:
             try:
                 value_client_row_ = (IngestionUtil.fix_encoded_string(row.__getitem__(0)),  # username
                                      row.__getitem__(1),  # nationality
-                                     row.__getitem__(2),  # location
+                                     IngestionUtil.fix_encoded_string(row.__getitem__(2)),  # location
                                      int(row.__getitem__(3)),  # rating
                                      int(IngestionUtil.parse_not_specified_value(row.__getitem__(4))),  # age
                                      int(row.__getitem__(5)),  # 15
@@ -145,6 +145,7 @@ class DataIngestionImpl(IDataIngestion):
                                      bool(row.__getitem__(28)),  # verified
                                      IngestionUtil.convert_none(row.__getitem__(29)),  # email
                                      row.__getitem__(30),  # preference_list
+                                     row.__getitem__(31),   # ethnicity
                                      "FEED_FILE")
                 mysqlcursor.execute(insert_client_row_statement, value_client_row_)
             except (ValueError, IndexError, DataError, MySQLInterfaceError) as e:
