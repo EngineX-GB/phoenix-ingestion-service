@@ -8,7 +8,8 @@
       "position" : 0,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : true
     },
     {
       "name" : "nationality",
@@ -17,7 +18,8 @@
       "position" : 1,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "location",
@@ -26,7 +28,8 @@
       "position" : 2,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : true
     },
     {
       "name" : "rating",
@@ -35,7 +38,8 @@
       "position" : 3,
       "replaceNonSpecifiedValue" : true,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "age",
@@ -44,7 +48,8 @@
       "position" : 4,
       "replaceNonSpecifiedValue" : true,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_15_min",
@@ -53,7 +58,8 @@
       "position" : 5,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_30_min",
@@ -62,7 +68,8 @@
       "position" : 6,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_45_min",
@@ -71,7 +78,8 @@
       "position" : 7,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_1_hour",
@@ -80,7 +88,8 @@
       "position" : 8,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_1_50_hour",
@@ -89,7 +98,8 @@
       "position" : 9,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_2_hour",
@@ -98,7 +108,8 @@
       "position" : 10,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_2_50_hour",
@@ -107,7 +118,8 @@
       "position" : 11,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_3_hour",
@@ -116,7 +128,8 @@
       "position" : 12,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_3_50_hour",
@@ -125,7 +138,8 @@
       "position" : 13,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_4_hour",
@@ -134,7 +148,8 @@
       "position" : 14,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "rate_overnight",
@@ -143,7 +158,8 @@
       "position" : 15,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "telephone",
@@ -152,7 +168,8 @@
       "position" : 16,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "url_page",
@@ -161,7 +178,8 @@
       "position" : 17,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "refresh_time",
@@ -170,7 +188,8 @@
       "position" : 18,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "user_id",
@@ -179,7 +198,8 @@
       "position" : 19,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "image_available",
@@ -188,7 +208,8 @@
       "position" : 20,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "region",
@@ -197,7 +218,8 @@
       "position" : 21,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "gender",
@@ -206,7 +228,8 @@
       "position" : 22,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : true,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "member_since",
@@ -215,7 +238,8 @@
       "position" : 23,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : true
+      "convertUKDateToSqlDate" : true,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "height",
@@ -224,7 +248,8 @@
       "position" : 24,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : true,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "dress_size",
@@ -233,7 +258,8 @@
       "position" : 25,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : true,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "hair_colour",
@@ -242,7 +268,8 @@
       "position" : 26,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : true,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "eye_colour",
@@ -251,7 +278,8 @@
       "position" : 27,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : true,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "verified",
@@ -260,7 +288,8 @@
       "position" : 28,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "email",
@@ -269,7 +298,8 @@
       "position" : 29,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : true,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     },
     {
       "name" : "preference_list",
@@ -278,7 +308,8 @@
       "position" : 30,
       "replaceNonSpecifiedValue" : false,
       "convertNullToNone" : false,
-      "convertUKDateToSqlDate" : false
+      "convertUKDateToSqlDate" : false,
+      "convertCharsetToUtf" : false
     }
   ]
 }

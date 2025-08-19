@@ -65,7 +65,8 @@ class CustomDataIngestionImpl(DataIngestionImpl):
                                                                    column["nullable"], column["position"],
                                                                    column["replaceNonSpecifiedValue"],
                                                                    column["convertNullToNone"],
-                                                                   column["convertUKDateToSqlDate"]))
+                                                                   column["convertUKDateToSqlDate"],
+                                                                   column["convertCharsetToUtf"]))
                     else:
                         raise RuntimeError("No ingestion config file that can handle parsing "
                                            + str(number_of_columns) + " columns")
@@ -93,6 +94,8 @@ class CustomDataIngestionImpl(DataIngestionImpl):
                         elif column.convert_uk_date_to_sql_date:
                             parameter_object_list.append(
                                 datetime.strptime(row.__getitem__(column.position), '%d/%m/%Y').strftime('%Y-%m-%d'))
+                        elif column.convert_charset_to_utf:
+                            parameter_object_list.append(IngestionUtil.fix_encoded_string(row.__getitem__(column.position)))
                         else:
                             parameter_object_list.append(row.__getitem__(column.position))
                     elif column.type == "boolean":
