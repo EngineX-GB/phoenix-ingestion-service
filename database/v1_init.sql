@@ -199,18 +199,21 @@ create index idx_client_changes_tracker_field_value on tbl_client_changes_tracke
 create index idx_client_changes_tracker_old_value on tbl_client_changes_tracker(old_value);
 
 
-
 create table if not exists tbl_feedback (
-	oid integer not null auto_increment,
-	client_oid integer,
-	date text,
-	status text,
-	comment_relative_to text,
+	oid bigint not null auto_increment,
+	service_provider varchar(3),
+	user_id varchar(20),
+	ukp_user_id varchar(10),
+	unique_identifier varchar(200),
+	rating varchar(20),
 	comment text,
-	author text,
+	feedback_date date,
 	primary key (oid),
-	foreign key (client_oid) references tbl_client(oid)
+	unique (unique_identifier)
 );
+
+create index idx_feedback_user_id on tbl_feedback(user_id);
+create index idx_feedback_ukp_user_id on tbl_feedback(ukp_user_id);
 
 
 -- 04-12-21: adding time series proc cleanup:

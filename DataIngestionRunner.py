@@ -7,12 +7,16 @@ import sys
 import os
 import uvicorn
 
+from controller.FeedbackDataIngestionLegacyImpl import FeedbackDataIngestionLegacyImpl
+from controller.UKPFeedbackDataIngestionLegacyImpl import UKPFeedbackDataIngestionLegacyImpl
 from util.IngestionUtil import IngestionUtil
 from controller.PropertyManager import PropertyManager
 
 if __name__ == "__main__":
     propertyManager = PropertyManager()
     dataAccess = DataIngestionImpl(propertyManager)
+    feedbackLoader = FeedbackDataIngestionLegacyImpl(propertyManager)
+    ukpFeedbackLoader = UKPFeedbackDataIngestionLegacyImpl(propertyManager)
     feedAnalyser = FeedIngestionAnalyticsImpl(propertyManager)
 
     internal_flags = ["--multiprocessing-fork"]
@@ -45,6 +49,12 @@ if __name__ == "__main__":
                 feed_file_list_string = sys.argv[3]
                 feed_file_list = feed_file_list_string.split(",")
                 dataAccess.load_feed_data(feed_file_list)
+            elif sys.argv[2] == "--load-feedback":
+                folder_path = sys.argv[3]
+                feedbackLoader.load_feed_data_by_directory(folder_path)
+            elif sys.argv[2] == "--load-ukp-feedback":
+                folder_path = sys.argv[3]
+                ukpFeedbackLoader.load_feed_data_by_directory(folder_path)
             elif sys.argv[2] == "--analyse":
                 folder_path = sys.argv[3]
                 feedAnalyser.load_feed_data_by_directory(folder_path)
