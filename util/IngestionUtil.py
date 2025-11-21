@@ -67,6 +67,14 @@ class IngestionUtil:
         return datarows
 
     @staticmethod
+    def get_csv_rows_via_list(records: list[str]):
+        datarows = []
+        rows = csv.reader(records, delimiter='|')
+        for row in rows:
+            datarows.append(row)
+        return datarows
+
+    @staticmethod
     def parse_not_specified_value(value: str):
         if value == "Not Specified":
             return 0

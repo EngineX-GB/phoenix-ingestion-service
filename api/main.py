@@ -15,6 +15,14 @@ data_ingestion = DataIngestionImpl(property_manager)
 def read_root():
     return {"Hello": "World"}
 
+@app.post("/clients")
+def load_client_data(records: list[str]):
+    print("Number of records to load : " + str(len(records)))
+    # for r in records:
+    #     print("[DEBUG] " + r)
+    print("Attempting to process")
+    data_ingestion.load_feed_data_from_json_feed(records)
+
 
 #
 #   To upload the feed file, requestor must ensure that

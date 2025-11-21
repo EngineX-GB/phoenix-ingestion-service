@@ -1,4 +1,3 @@
-import io
 import os
 from datetime import datetime
 
@@ -17,6 +16,15 @@ class DataIngestionImpl(IDataIngestion):
     def __init__(self, property_manager):
         self.property_manager = property_manager
         pass
+
+    def load_feed_data_from_json_feed(self, records: list[str]):
+        try:
+            csv_read_rows = IngestionUtil.get_csv_rows_via_list(records)
+            # add this to staging table
+            self.populate_staging_data(csv_read_rows, "SYSTEM")
+        except UnicodeDecodeError:
+            print(
+                "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv data [SYSTEM]")
 
     # load the feed file into the staging table and
     # call out the stored proc to formalise the data
@@ -89,13 +97,13 @@ class DataIngestionImpl(IDataIngestion):
 
     def populate_staging_data(self, csv_row: list, feed_file: str):
         mydb = mysql.connector.connect(
-            host = self.property_manager.get_datasource_url(),
-            user = self.property_manager.get_datasource_username(),
-            password = self.property_manager.get_datasource_password(),
-            database = self.property_manager.get_datasource_name()
+            host=self.property_manager.get_datasource_url(),
+            user=self.property_manager.get_datasource_username(),
+            password=self.property_manager.get_datasource_password(),
+            database=self.property_manager.get_datasource_name()
         )
 
-        # print("[INFO] Connected to data source : mysql")
+        record_source_val = "SYSTEM" if feed_file == "SYSTEM" else "FEED_FILE"
 
         mysqlcursor = mydb.cursor()
 
@@ -145,11 +153,12 @@ class DataIngestionImpl(IDataIngestion):
                                      bool(row.__getitem__(28)),  # verified
                                      IngestionUtil.convert_none(row.__getitem__(29)),  # email
                                      row.__getitem__(30),  # preference_list
-                                     row.__getitem__(31),   # ethnicity
-                                     "FEED_FILE")
+                                     row.__getitem__(31),  # ethnicity
+                                     record_source_val)
                 mysqlcursor.execute(insert_client_row_statement, value_client_row_)
             except (ValueError, IndexError, DataError, MySQLInterfaceError) as e:
-                print("[WARN] Unable to correctly parse row in file[" + feed_file + "] row=[" + str(row) + "] exception = " + str(e))
+                print("[WARN] Unable to correctly parse row in file[" + feed_file + "] row=[" + str(
+                    row) + "] exception = " + str(e))
 
         mydb.commit()
         # after the loads on the temp table, run the store proc to put it in the main table
