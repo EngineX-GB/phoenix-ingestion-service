@@ -216,6 +216,74 @@ create index idx_feedback_user_id on tbl_feedback(user_id);
 create index idx_feedback_ukp_user_id on tbl_feedback(ukp_user_id);
 
 
+-- 2026-01-02: used for storing the new feedback data from the api
+
+CREATE TABLE IF NOT EXISTS tbl_feedback_v2 (
+	id bigint,
+	user_id varchar(20),
+	username varchar(100),
+	by_user_id varchar(20),
+	by_username varchar(100),
+	by_user_total_rating bigint,
+	rating_date datetime,
+	rating varchar(20),
+	disputed boolean,
+	feedback text,
+	feedback_response text,
+	rating_type varchar(100),
+	user_type varchar(100),
+	user_active boolean,
+	PRIMARY KEY (id)
+);
+
+create index idx_feedback_v2_user_id on tbl_feedback_v2(user_id);
+
+create table if not exists tbl_service_report_v2 (
+	id bigint,
+	user_id varchar(20),
+	username varchar(100),
+	candidate_description text,
+	candidate_score int,
+	by_username varchar(100),
+	comments text,
+	comments_score int,
+	create_date text,
+	exclude_affiliate bool,
+	price varchar(10),	 -- fee
+	location text,
+	meet_date text,--
+	meet_duration varchar(10),
+	on_call bool, -- check
+	personality text,
+	personality_score int,
+	rating_total bigint,
+	recommend bool,
+	rejected bool, -- check
+	report_rating varchar(100),
+	score int, -- check
+	services text,
+	services_score int, -- check
+	venue_description text,
+	venue_score int, -- check
+	visit_again bool,
+	primary key (id)
+);
+
+
+create index idx_service_report_v2_user_id on tbl_service_report_v2(user_id);
+
+CREATE TABLE IF NOT EXISTS tbl_client_bulk_staging AS SELECT * FROM tbl_client_temp WHERE 1 = 0;
+
+
+
+
+
+
+
+
+
+
+
 -- 04-12-21: adding time series proc cleanup:
 
 

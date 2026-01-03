@@ -8,6 +8,8 @@ import os
 import uvicorn
 
 from controller.FeedbackDataIngestionLegacyImpl import FeedbackDataIngestionLegacyImpl
+from controller.FeedbackV2DataIngestionImpl import FeedbackV2DataIngestionImpl
+from controller.ServiceReportsV2DataIngestionImpl import ServiceReportsV2DataIngestionImpl
 from controller.UKPFeedbackDataIngestionLegacyImpl import UKPFeedbackDataIngestionLegacyImpl
 from util.IngestionUtil import IngestionUtil
 from controller.PropertyManager import PropertyManager
@@ -16,8 +18,10 @@ if __name__ == "__main__":
     propertyManager = PropertyManager()
     dataAccess = DataIngestionImpl(propertyManager)
     feedbackLoader = FeedbackDataIngestionLegacyImpl(propertyManager)
+    feedbackV2Loader = FeedbackV2DataIngestionImpl(propertyManager)
     ukpFeedbackLoader = UKPFeedbackDataIngestionLegacyImpl(propertyManager)
     feedAnalyser = FeedIngestionAnalyticsImpl(propertyManager)
+    serviceReportsV2Loader = ServiceReportsV2DataIngestionImpl(propertyManager)
 
     internal_flags = ["--multiprocessing-fork"]
     if any(flag in sys.argv for flag in internal_flags):
@@ -52,6 +56,12 @@ if __name__ == "__main__":
             elif sys.argv[2] == "--load-feedback":
                 folder_path = sys.argv[3]
                 feedbackLoader.load_feed_data_by_directory(folder_path)
+            elif sys.argv[2] == "--load-feedback-v2":
+                folder_path = sys.argv[3]
+                feedbackV2Loader.load_feed_data_into_one_directory(folder_path)
+            elif sys.argv[2] == "--load-servicereports-v2":
+                folder_path = sys.argv[3]
+                serviceReportsV2Loader.load_feed_data_into_one_directory(folder_path)
             elif sys.argv[2] == "--load-ukp-feedback":
                 folder_path = sys.argv[3]
                 ukpFeedbackLoader.load_feed_data_by_directory(folder_path)

@@ -49,6 +49,23 @@ class DataIngestionImpl(IDataIngestion):
             print(
                 "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv file in text wrapper")
 
+
+
+    def load_feed_data_into_one_directory(self, directory_path:str):
+        if not os.path.exists(directory_path):
+            raise Exception("Directory " + directory_path + " does not exist.")
+
+        # list files in the directory
+
+        file_entries = os.listdir(directory_path)
+        if len(file_entries) == 0:
+            raise Exception("Directory " + directory_path + " is empty")
+        files = [
+            os.path.abspath(os.path.join(directory_path, f))
+            for f in file_entries if os.path.isfile(os.path.join(directory_path, f))]
+        self.load_feed_data(files)
+
+
     def load_feed_data_by_directory(self, directory_path: str):
         pattern = re.compile("^\\d{4}-\\d{2}-\\d{2}$")
         valid_subdirectories = []
