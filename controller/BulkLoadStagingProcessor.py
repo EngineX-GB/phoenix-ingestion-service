@@ -1,11 +1,7 @@
-import datetime
 import warnings
 
 import mysql
 import mysql.connector
-
-from controller.PropertyManager import PropertyManager
-
 
 class BulkLoadStagingProcessor:
 
