@@ -116,7 +116,7 @@ class CustomDataIngestionImpl(DataIngestionImpl):
         #
         mydb.commit()
 
-        if not self.stage_bulk_load:
+        if self.stage_bulk_load == "false":
             # # after the loads on the temp table, run the store proc to put it in the main table
             # print("[INFO] Running store proc to move data from staging to production table")
             mysqlcursor.callproc("prc_new_clean_up_data")
