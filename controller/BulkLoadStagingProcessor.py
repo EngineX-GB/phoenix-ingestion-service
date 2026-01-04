@@ -13,6 +13,22 @@ class BulkLoadStagingProcessor:
         self.property_manager = property_manager
         pass
 
+    def clear_staging(self):
+        mydb = mysql.connector.connect(
+            host=self.property_manager.get_datasource_url(),
+            user=self.property_manager.get_datasource_username(),
+            password=self.property_manager.get_datasource_password(),
+            database=self.property_manager.get_datasource_name()
+        )
+        cursor = mydb.cursor()
+
+        query = "delete from tbl_client_bulk_staging"
+        cursor.execute(query)
+        mydb.commit()
+        print("Delete staging data : [" + str(cursor.rowcount) + " rows].")
+        cursor.close()
+        mydb.close()
+
     def process_bulk_staging_data(self):
         distinct_dates = []
 
@@ -45,7 +61,7 @@ class BulkLoadStagingProcessor:
         # Get the distinct dates
         cursor.execute(query)
         results = cursor.fetchall()
-        for (date_value, ) in results:
+        for (date_value,) in results:
             distinct_dates.append(date_value)
 
         # for each date, copy the dataset into the tbl_client_temp table
@@ -71,7 +87,8 @@ class BulkLoadStagingProcessor:
                 row = stored_proc_result.fetchone()
 
                 if row:
-                    print("[INFO] Load statistics: Date : " + formatted_date_value + ", duplicates deleted: " + str(row[0]) + ", New records : " + str(row[1]) +
+                    print("[INFO] Load statistics: Date : " + formatted_date_value + ", duplicates deleted: " + str(
+                        row[0]) + ", New records : " + str(row[1]) +
                           ", deleted temp records : " + str(row[2]) + ", updated records : " + str(row[3]))
             mydb.commit()
 
@@ -79,9 +96,3 @@ class BulkLoadStagingProcessor:
 
         cursor.close()
         mydb.close()
-
-
-if __name__ == "__main__":
-    propertyManager = PropertyManager()
-    b = BulkLoadStagingProcessor(propertyManager)
-    b.process_bulk_staging_data()

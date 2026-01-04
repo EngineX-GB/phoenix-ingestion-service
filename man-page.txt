@@ -65,3 +65,8 @@
 
                                     where "C:\feeds\2025-01-01" contains text files that contain the data required to be
                                     loaded.
+
+ --cmd ----load-from-staging        Loads data from the tbl_client_bulk_loading table into tbl_client_temp and
+                                    processes the data
+
+ --cmd --clear-staging              Clear the tbl_client_bulk_loading table
