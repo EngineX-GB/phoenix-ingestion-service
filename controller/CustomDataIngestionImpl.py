@@ -32,7 +32,7 @@ class CustomDataIngestionImpl(DataIngestionImpl):
 
     def populate_staging_data(self, csv_row: list, feed_file):
 
-        table_name = "tbl_client_bulk_staging" if self.stage_bulk_load == True else "tbl_client_temp"
+        table_name = "tbl_client_bulk_staging" if self.stage_bulk_load == "true" else "tbl_client_temp"
 
         mydb = mysql.connector.connect(
             host = self.property_manager.get_datasource_url(),
