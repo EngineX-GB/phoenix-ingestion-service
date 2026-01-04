@@ -13,11 +13,12 @@ from util.IngestionUtil import IngestionUtil
 
 class CustomDataIngestionImpl(DataIngestionImpl):
 
-    def __init__(self, column_configfile_list, property_manager):
+    def __init__(self, column_configfile_list, property_manager, stage_bulk_load):
         super().__init__(property_manager)
         self.column_configfile_list = column_configfile_list
         self.dict = self.build_column_count_to_config_dictionary(self.column_configfile_list)
         self.debug = False
+        self.stage_bulk_load = stage_bulk_load
 
     def build_column_count_to_config_dictionary(self, column_configfile_list):
         column_count_dictionary = {}
@@ -30,6 +31,8 @@ class CustomDataIngestionImpl(DataIngestionImpl):
         return column_count_dictionary
 
     def populate_staging_data(self, csv_row: list, feed_file):
+
+        table_name = "tbl_client_bulk_staging" if self.stage_bulk_load == True else "tbl_client_temp"
 
         mydb = mysql.connector.connect(
             host = self.property_manager.get_datasource_url(),
@@ -71,7 +74,7 @@ class CustomDataIngestionImpl(DataIngestionImpl):
                         raise RuntimeError("No ingestion config file that can handle parsing "
                                            + str(number_of_columns) + " columns")
 
-                insert_client_row_statement = "INSERT INTO tbl_client_temp (" + sql_column_names_string[
+                insert_client_row_statement = "INSERT INTO " + table_name + " (" + sql_column_names_string[
                                                                                 :-1] + ") VALUES (" + sql_values_string[
                                                                                                       :-2] + ")"
 
@@ -112,9 +115,12 @@ class CustomDataIngestionImpl(DataIngestionImpl):
                 continue
         #
         mydb.commit()
-        # # after the loads on the temp table, run the store proc to put it in the main table
-        # print("[INFO] Running store proc to move data from staging to production table")
-        mysqlcursor.callproc("prc_new_clean_up_data")
-        mydb.commit()
+
+        if not self.stage_bulk_load:
+            # # after the loads on the temp table, run the store proc to put it in the main table
+            # print("[INFO] Running store proc to move data from staging to production table")
+            mysqlcursor.callproc("prc_new_clean_up_data")
+            mydb.commit()
+
         mysqlcursor.close()
         # print("[INFO] Disconnected from data source : mysql")

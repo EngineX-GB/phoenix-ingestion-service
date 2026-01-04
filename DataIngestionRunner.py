@@ -75,7 +75,9 @@ if __name__ == "__main__":
                     if not os.path.exists(mapper):
                         raise RuntimeError("Mapper file : " + mapper + " does not exist")
                 folder_path = sys.argv[3]
-                dynamicLoad = CustomDataIngestionImpl(config_mappers, propertyManager)
+                bulk_load_to_staging_table = bool(sys.argv[4])
+                print("Bulk loading to staging table : " + str(bulk_load_to_staging_table))
+                dynamicLoad = CustomDataIngestionImpl(config_mappers, propertyManager, bulk_load_to_staging_table)
                 dynamicLoad.load_feed_data_by_directory(folder_path)
             else:
                 print("[ERROR] Unknown cmd flag " + sys.argv[2])
