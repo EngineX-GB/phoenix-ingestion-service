@@ -20,7 +20,7 @@
                                     --cmd --batch "C:/feeds"
                                     where "C:/feeds" contains subdirectories: "2025-01-01", "2025-01-02"....etc.
 
---cmd --dynamic <feeds_folder> <config_files_list>
+--cmd --dynamic <feeds_folder> <config_files_list> <bulk_load_to_staging_table: bool>
                                     Load feed data based on varying columns that are defined by config files.
 
                                     <feeds_folder>:
@@ -35,9 +35,15 @@
                                     A list of config files that contain the details for what data to load in which
                                     column.
 
+                                    <bulk_load_to_staging_table: bool>
+
+                                    Set to true if the csv data is put into a staging table first before going to
+                                    the tbl_client_temp table, or false if it does not go into the staging table and
+                                    goes into the tbl_client_temp table directly.
+
                                     Full example of the command:
 
-                                    --cmd --dynamic "C:\Feeds" "ingestion-col-1.json,ingestion-col-2.json"
+                                    --cmd --dynamic "C:\Feeds" "ingestion-col-1.json,ingestion-col-2.json" True
 
                                     where "C:/feeds" contains subdirectories: "2025-01-01", "2025-01-02"....etc.
 
@@ -59,3 +65,8 @@
 
                                     where "C:\feeds\2025-01-01" contains text files that contain the data required to be
                                     loaded.
+
+ --cmd ----load-from-staging        Loads data from the tbl_client_bulk_loading table into tbl_client_temp and
+                                    processes the data
+
+ --cmd --clear-staging              Clear the tbl_client_bulk_loading table

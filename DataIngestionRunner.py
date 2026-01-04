@@ -1,3 +1,4 @@
+from controller.BulkLoadStagingProcessor import BulkLoadStagingProcessor
 from controller.CustomDataIngestionImpl import CustomDataIngestionImpl
 from controller.FeedIngestionAnalyticsImpl import FeedIngestionAnalyticsImpl
 from controller.DataIngestionImpl import DataIngestionImpl
@@ -22,6 +23,7 @@ if __name__ == "__main__":
     ukpFeedbackLoader = UKPFeedbackDataIngestionLegacyImpl(propertyManager)
     feedAnalyser = FeedIngestionAnalyticsImpl(propertyManager)
     serviceReportsV2Loader = ServiceReportsV2DataIngestionImpl(propertyManager)
+    bulkLoadStagingProcessor = BulkLoadStagingProcessor(propertyManager)
 
     internal_flags = ["--multiprocessing-fork"]
     if any(flag in sys.argv for flag in internal_flags):
@@ -68,6 +70,10 @@ if __name__ == "__main__":
             elif sys.argv[2] == "--analyse":
                 folder_path = sys.argv[3]
                 feedAnalyser.load_feed_data_by_directory(folder_path)
+            elif sys.argv[2] == "--load-from-staging":
+                bulkLoadStagingProcessor.process_bulk_staging_data()
+            elif sys.argv[2] == "--clear-staging":
+                bulkLoadStagingProcessor.clear_staging()
             elif sys.argv[2] == "--dynamic":
                 config_mapping_files_list_string = sys.argv[4]
                 config_mappers = config_mapping_files_list_string.split(",")
@@ -75,7 +81,9 @@ if __name__ == "__main__":
                     if not os.path.exists(mapper):
                         raise RuntimeError("Mapper file : " + mapper + " does not exist")
                 folder_path = sys.argv[3]
-                dynamicLoad = CustomDataIngestionImpl(config_mappers, propertyManager)
+                bulk_load_to_staging_table = sys.argv[5].lower()
+                print("Bulk loading to staging table : " + str(bulk_load_to_staging_table))
+                dynamicLoad = CustomDataIngestionImpl(config_mappers, propertyManager, bulk_load_to_staging_table)
                 dynamicLoad.load_feed_data_by_directory(folder_path)
             else:
                 print("[ERROR] Unknown cmd flag " + sys.argv[2])

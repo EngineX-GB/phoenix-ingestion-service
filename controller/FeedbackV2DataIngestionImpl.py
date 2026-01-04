@@ -39,6 +39,7 @@ class FeedbackV2DataIngestionImpl(DataIngestionImpl):
         except ValueError:
             return datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
 
+
     def populate_staging_data(self, csv_row: list, feed_file: str):
 
         mydb = mysql.connector.connect(
@@ -85,3 +86,4 @@ class FeedbackV2DataIngestionImpl(DataIngestionImpl):
 
         mydb.commit()
         mysqlcursor.close()
+
