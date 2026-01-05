@@ -160,6 +160,7 @@ create table if not exists tbl_client_temp (
 );
 
 create index idx_client_user_id on tbl_client(user_id);
+create index idx_refresh_time on tbl_client(refresh_time);
 create index idx_client_temp_user_id on tbl_client_temp(user_id);
 
 create table if not exists tbl_client_price_time_series_tracking (
@@ -326,7 +327,7 @@ end; //
 
 
 
-
+-- TODO: 2026-01-05 investigate why this is taking longer. Do we need this still?
 delimiter //
 create procedure prc_clean_up_time_series_data()
 begin
@@ -708,8 +709,8 @@ begin
 	set @price_time_series_records = ROW_COUNT();
 
 	-- run procedure to clean up duplicates (as a result of multiple loads if any)
-
-	call prc_clean_up_time_series_data();
+	-- TODO: 2026-01-05 - Remove the prc_clean_up_time_series_data(). Needs to be analysed as it is consuming load time. Do we need this?
+	-- call prc_clean_up_time_series_data();
 
 	-- insert new records from temp to master table
 
