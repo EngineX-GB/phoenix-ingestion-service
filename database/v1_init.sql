@@ -757,3 +757,29 @@ ALTER TABLE db_phoenix.tbl_client CONVERT TO CHARACTER SET utf8mb4;
 
 ALTER TABLE db_phoenix.tbl_client_temp MODIFY COLUMN location text CHARACTER SET utf8mb4;
 ALTER TABLE db_phoenix.tbl_client MODIFY COLUMN location text CHARACTER SET utf8mb4;
+
+
+
+-- =======================================================================
+
+-- analytics tables
+
+create table if not exists tbl_client_analytics (
+	oid bigint not null auto_increment,
+	user_id varchar(20),
+	member_since date,
+	first_observed datetime,
+	last_observed datetime,
+	minimum_charge integer,
+	maximum_charge integer,
+	spread integer,
+	number_of_days_collecting_data bigint,
+	number_of_days_in_service bigint,
+	percentage_available decimal,
+	total_regions_travelled integer,
+	previously_serviced_bb bool,
+	record_time datetime,
+	primary key (oid)
+);
+
+create index idx_client_analytics_user_id on tbl_client_analytics(user_id);
