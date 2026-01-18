@@ -3,6 +3,7 @@ from mysql.connector import DataError
 
 from analytics.AnalyticsQueries import AnalyticsQueries
 from analytics.AnalyticsUtil import AnalyticsUtil
+from analytics.LinkAnalyticsProcessor import LinkAnalyticsProcessor
 
 
 class ClientAnalyticsProcessor:
@@ -56,8 +57,17 @@ class ClientAnalyticsProcessor:
         else:
             raise Exception("An error occurred when trying to get load dates for preparing analytics.")
 
-        # load links:
+
+
+        #load links:
         self.load_links_from_feedback_data(user_id_list, mysql_cursor)
+
+
+        # TODO: commented for now. Uncomment later
+        #links_processor = LinkAnalyticsProcessor()
+        #links_processor.get_user_2_list(["800128"], 0, 2, mysql_cursor)
+
+
 
         mydb.commit()
         mysql_cursor.close()
