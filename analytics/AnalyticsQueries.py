@@ -14,6 +14,23 @@ class AnalyticsQueries:
         """
 
     @staticmethod
+    def create_links_from_feedback_reports(user_id):
+        return f"""
+		insert ignore into tbl_link (user_id_1, user_id_2, input_type, source, relationship, notes) 
+	    select user_id, by_user_id, "AUTOMATED" as input_type, "ANALYTICS_BUILT_FROM_FEEDBACK" as source, "SP_TO_P" as relationship, concat("SP -> P | ", username, "->", by_username) as notes
+	  	from tbl_feedback_v2 
+	    where user_id = '{user_id}' 
+	    and rating_type = 'Booking' 
+	    group by username, by_username, by_user_id
+		union
+	    select by_user_id,user_id, "AUTOMATED" as input_type, "ANALYTICS_BUILT_FROM_FEEDBACK" as source, "P_TO_SP" as relationship, concat("P -> SP | ", by_username, "->", username) as notes
+	  	from tbl_feedback_v2 
+	    where user_id = '{user_id}' 
+	    and rating_type = 'Booking' 
+	    group by username, by_username, by_user_id;			
+        """
+
+    @staticmethod
     def get_attendance_statistics_query(first_load_date_minus_one_day, latest_load_date, user_id_list):
         return f"""
         insert into tbl_client_analytics(user_id, member_since, first_observed, last_observed, minimum_charge, maximum_charge, spread,
@@ -32,7 +49,7 @@ class AnalyticsQueries:
 	    else (COUNT(refresh_time) / DATEDIFF('{latest_load_date}', '2022-01-21') * 100) 
 	    end as percentage_available,
 		count(distinct(region)) as total_regions_travelled,
-		(SUM(CASE WHEN preference_list LIKE '%B%' THEN 1 ELSE 0 END) > 0) AS previously_serviced_bb,
+		(SUM(CASE WHEN preference_list LIKE '%' THEN 1 ELSE 0 END) > 0) AS previously_serviced_bb,
 		now()
 		from tbl_client_history where user_id in ({user_id_list})
 	    group by user_id, member_since order by percentage_available desc;

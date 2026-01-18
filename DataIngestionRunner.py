@@ -88,7 +88,7 @@ if __name__ == "__main__":
                 dynamicLoad = CustomDataIngestionImpl(config_mappers, propertyManager, bulk_load_to_staging_table)
                 dynamicLoad.load_feed_data_by_directory(folder_path)
             elif sys.argv[2] == "--analytics":
-                clientAnalyticsProcessor.check_red_flag_data()
+                clientAnalyticsProcessor.run_analytics()
             else:
                 print("[ERROR] Unknown cmd flag " + sys.argv[2])
         else:

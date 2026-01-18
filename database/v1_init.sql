@@ -238,6 +238,7 @@ CREATE TABLE IF NOT EXISTS tbl_feedback_v2 (
 );
 
 create index idx_feedback_v2_user_id on tbl_feedback_v2(user_id);
+create index idx_tbl_feedback_v2_byuserid on tbl_feedback_v2(by_user_id);
 
 create table if not exists tbl_service_report_v2 (
 	id bigint,
@@ -783,3 +784,14 @@ create table if not exists tbl_client_analytics (
 );
 
 create index idx_client_analytics_user_id on tbl_client_analytics(user_id);
+
+ create table if not exists tbl_link (
+    user_id_1 varchar(10) not null,
+    user_id_2 varchar(10) not null,
+    input_type varchar(20) not null,
+    source varchar(200),
+    relationship varchar(20),
+    notes text,
+    timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    primary key (user_id_1, user_id_2)
+);
