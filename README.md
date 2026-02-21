@@ -26,3 +26,13 @@ OpenAPI Docs:
 Here is an example of a query:
 
 DataIngestionRunner.exe --cmd --dynamic "C:\Users\Dell\Documents\phoenix-feed-prod\feeds\2023" "C:\Users\Dell\PycharmProjects\data-ingestion\configs\ingestion-config-28-col.json,C:\Users\Dell\PycharmProjects\data-ingestion\configs\ingestion-config-29-col.json,C:\Users\Dell\PycharmProjects\data-ingestion\configs\ingestion-config-30-col.json,C:\Users\Dell\PycharmProjects\data-ingestion\configs\ingestion-config-31-col.json,C:\Users\Dell\PycharmProjects\data-ingestion\configs\ingestion-config-32-col.json" True
+
+...where `True` refers to loading the data into a staging table first.
+
+`DataIngestionRunner.exe --cmd --load-from-staging`
+
+This is to load the data from the staging table into the master table (`tbl_client`)
+
+`DataIngestionRunner.exe --cmd --analytics`
+
+This is to run flush and run analytics for ALL clients in the system.
