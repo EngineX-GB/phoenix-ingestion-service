@@ -1,3 +1,6 @@
+from analytics.AnalyticsUtil import AnalyticsUtil
+
+
 class AnalyticsQueries:
 
     def __init__(self):
@@ -20,13 +23,13 @@ class AnalyticsQueries:
 	    select user_id, by_user_id, "AUTOMATED" as input_type, "ANALYTICS_BUILT_FROM_FEEDBACK" as source, "SP_TO_P" as relationship, concat("SP -> P | ", username, "->", by_username) as notes
 	  	from tbl_feedback_v2 
 	    where user_id = '{user_id}' 
-	    and rating_type = 'Booking' 
+	    and rating_type = '{AnalyticsUtil.lookup_data("E_BOOKING")}' 
 	    group by username, by_username, by_user_id
 		union
 	    select by_user_id,user_id, "AUTOMATED" as input_type, "ANALYTICS_BUILT_FROM_FEEDBACK" as source, "P_TO_SP" as relationship, concat("P -> SP | ", by_username, "->", username) as notes
 	  	from tbl_feedback_v2 
 	    where user_id = '{user_id}' 
-	    and rating_type = 'Booking' 
+	    and rating_type = '{AnalyticsUtil.lookup_data("E_BOOK")}' 
 	    group by username, by_username, by_user_id;			
         """
 
@@ -49,7 +52,7 @@ class AnalyticsQueries:
 	    else (COUNT(refresh_time) / DATEDIFF('{latest_load_date}', '2022-01-21') * 100) 
 	    end as percentage_available,
 		count(distinct(region)) as total_regions_travelled,
-		(SUM(CASE WHEN preference_list LIKE '%' THEN 1 ELSE 0 END) > 0) AS previously_serviced_bb,
+		(SUM(CASE WHEN preference_list LIKE '%{AnalyticsUtil.lookup_data("BK")}%' THEN 1 ELSE 0 END) > 0) AS previously_serviced_bb,
 		now()
 		from tbl_client_history where user_id in ({user_id_list})
 	    group by user_id, member_since order by percentage_available desc;

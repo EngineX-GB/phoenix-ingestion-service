@@ -19,8 +19,8 @@ class LinkAnalyticsProcessor:
             self.get_user_2_list(user_id_list, starting_iteration_number, number_of_iterations, cursor)
         else:
             # don't iterate and check the status of the clients to see if they have any red flags associated with them.
-            red_flag_query = f"SELECT user_id from tbl_client where user_id in ({AnalyticsUtil.join_strings_from_list(user_id_list)}) and preference_list like '%BB%'"
+            red_flag_query = f"SELECT user_id from tbl_client where user_id in ({AnalyticsUtil.join_strings_from_list(user_id_list)}) and preference_list like '%" + AnalyticsUtil.lookup_data("BK") + "%'"
             cursor.execute(red_flag_query)
             resultset = cursor.fetchall()
             for (bad_user,) in resultset:
-                print("BadUser : " + bad_user)
+                print("BK_User : " + bad_user)
