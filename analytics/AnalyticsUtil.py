@@ -11,5 +11,5 @@ class AnalyticsUtil:
     def lookup_data(key: str):
         return {
             "BK" : "kcaberaB",
-            "E_BOOKING" : "gnikooB trocsE"
+            "E_BOOK" : "gnikooB trocsE"
         }.get(key)[::-1]

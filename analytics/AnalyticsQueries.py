@@ -23,7 +23,7 @@ class AnalyticsQueries:
 	    select user_id, by_user_id, "AUTOMATED" as input_type, "ANALYTICS_BUILT_FROM_FEEDBACK" as source, "SP_TO_P" as relationship, concat("SP -> P | ", username, "->", by_username) as notes
 	  	from tbl_feedback_v2 
 	    where user_id = '{user_id}' 
-	    and rating_type = '{AnalyticsUtil.lookup_data("E_BOOKING")}' 
+	    and rating_type = '{AnalyticsUtil.lookup_data("E_BOOK")}' 
 	    group by username, by_username, by_user_id
 		union
 	    select by_user_id,user_id, "AUTOMATED" as input_type, "ANALYTICS_BUILT_FROM_FEEDBACK" as source, "P_TO_SP" as relationship, concat("P -> SP | ", by_username, "->", username) as notes
