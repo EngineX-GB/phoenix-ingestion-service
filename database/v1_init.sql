@@ -489,13 +489,13 @@ create table if not exists tbl_client_image (
 	foreign key (client_oid) references tbl_client (oid)
 );
 
-
-create table if not exists tbl_client_watch_list (
-	oid integer not null auto_increment,
-	client_oid integer not null,
-	primary key (oid),
-	foreign key (client_oid) references tbl_client(oid)
-);
+-- 2026-02-21: Commented as it is not needed. Remove it completely from tbe script.
+-- create table if not exists tbl_client_watch_list (
+--	oid integer not null auto_increment,
+--	client_oid integer not null,
+--	primary key (oid),
+--	foreign key (client_oid) references tbl_client(oid)
+-- );
 
 
 create procedure proc_delete_duplicates()
@@ -528,33 +528,34 @@ create table if not exists tbl_appointment_log (
 	foreign key (client_oid) references tbl_client(oid)
 );
 
+-- 2026-02-21: Commented as it is not needed. Remove it completely from tbe script.
 
-create procedure prc_get_total_metrics()
-begin
-	select (select count(oid) from tbl_client) as total_clients,
-			(select count(oid) from tbl_client_watch_list) as total_watch_list,
-			(select count(oid) from tbl_client_changes_tracker where date(record_datetime) = date(now())) as new_tracked_changes,
-			-- get the total number of clients available (system wide)
-			(select count(oid) from tbl_client where date(refresh_time) = date(now())) as total_available_clients,
+-- create procedure prc_get_total_metrics()
+-- begin
+-- 	select (select count(oid) from tbl_client) as total_clients,
+-- 			(select count(oid) from tbl_client_watch_list) as total_watch_list,
+-- 			(select count(oid) from tbl_client_changes_tracker where date(record_datetime) = date(now())) as new_tracked_changes,
+----  			-- get the total number of clients available (system wide)
+---   			(select count(oid) from tbl_client where date(refresh_time) = date(now())) as total_available_clients,
+--
+-- 			-- get the total number of clients that are not available today (system wide)
+-- 			(select count(oid) from tbl_client where date(refresh_time) < date(now())) as total_not_available_clients,
+--
+-- 			-- new client count
+-- 			(select count(oid) from tbl_new_clients where date(load_datetime) = date(now())) as total_new_clients,
 
-			-- get the total number of clients that are not available today (system wide)
-			(select count(oid) from tbl_client where date(refresh_time) < date(now())) as total_not_available_clients,
-
-			-- new client count
-			(select count(oid) from tbl_new_clients where date(load_datetime) = date(now())) as total_new_clients,
-
-			-- get the total number of clients in the watch list
-			(select count(oid) from tbl_client_watch_list) as total_client_watchlist,
+-- 			-- get the total number of clients in the watch list
+-- 			(select count(oid) from tbl_client_watch_list) as total_client_watchlist,
 
 			-- get the total number of approved appointments bookings
-			(select count(oid) from tbl_appointment_log) as total_appointment_bookings,
+-- 			(select count(oid) from tbl_appointment_log) as total_appointment_bookings,
 
 			-- get the number of stale client records
 
-			(select count(oid) client_oid from tbl_client where (month(now()) - month(refresh_time)) >= 4) as total_stale_client_records;
+-- 			(select count(oid) client_oid from tbl_client where (month(now()) - month(refresh_time)) >= 4) as total_stale_client_records;
 
 
-end;
+-- end;
 
 create table tbl_client_availability_tracker (
 	oid integer not null auto_increment,
