@@ -55,6 +55,17 @@ create table if not exists tbl_client (
 	rate_3_50_hour integer,
 	rate_4_hour integer,
 	rate_overnight integer,
+	diff_15_min integer default 0,
+	diff_30_min integer default 0,
+	diff_45_min integer default 0,
+	diff_1_hour integer default 0,
+	diff_1_50_hour integer default 0,
+	diff_2_hour integer default 0,
+	diff_2_50_hour integer default 0,
+	diff_3_hour integer default 0,
+	diff_3_50_hour integer default 0,
+	diff_4_hour integer,
+	diff_overnight integer,
 	telephone text,
 	url_page text,
 	refresh_time datetime,
@@ -446,6 +457,9 @@ insert into tbl_client_changes_tracker (user_id, field_value, old_value, new_val
 	(select c.user_Id as user_id, "rating" as fieldname, t.rating as old_value, c.rating as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.rating <> t.rating)
 	union
+	(select c.user_Id as user_id, "age" as fieldname, t.rating as old_value, c.rating as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
+	inner join tbl_client c on t.user_id = c.user_id where c.age <> t.age)
+	union
 	(select c.user_Id as user_id, "nationality" as fieldname, t.nationality as old_value, c.nationality as new_value, c.refresh_time as act_time from (select * from tbl_changes_tracker_temp where user_id in (select user_id from tbl_client)) t
 	inner join tbl_client c on t.user_id = c.user_id where c.nationality <> t.nationality);
 
@@ -489,15 +503,6 @@ create table if not exists tbl_client_image (
 	foreign key (client_oid) references tbl_client (oid)
 );
 
--- 2026-02-21: Commented as it is not needed. Remove it completely from tbe script.
--- create table if not exists tbl_client_watch_list (
---	oid integer not null auto_increment,
---	client_oid integer not null,
---	primary key (oid),
---	foreign key (client_oid) references tbl_client(oid)
--- );
-
-
 create procedure proc_delete_duplicates()
 begin
 	delete from tbl_client where oid in (select oid from tbl_client group by user_id having count(user_id) > 1 order by user_id);
@@ -527,35 +532,6 @@ create table if not exists tbl_appointment_log (
 	primary key (oid),
 	foreign key (client_oid) references tbl_client(oid)
 );
-
--- 2026-02-21: Commented as it is not needed. Remove it completely from tbe script.
-
--- create procedure prc_get_total_metrics()
--- begin
--- 	select (select count(oid) from tbl_client) as total_clients,
--- 			(select count(oid) from tbl_client_watch_list) as total_watch_list,
--- 			(select count(oid) from tbl_client_changes_tracker where date(record_datetime) = date(now())) as new_tracked_changes,
-----  			-- get the total number of clients available (system wide)
----   			(select count(oid) from tbl_client where date(refresh_time) = date(now())) as total_available_clients,
---
--- 			-- get the total number of clients that are not available today (system wide)
--- 			(select count(oid) from tbl_client where date(refresh_time) < date(now())) as total_not_available_clients,
---
--- 			-- new client count
--- 			(select count(oid) from tbl_new_clients where date(load_datetime) = date(now())) as total_new_clients,
-
--- 			-- get the total number of clients in the watch list
--- 			(select count(oid) from tbl_client_watch_list) as total_client_watchlist,
-
-			-- get the total number of approved appointments bookings
--- 			(select count(oid) from tbl_appointment_log) as total_appointment_bookings,
-
-			-- get the number of stale client records
-
--- 			(select count(oid) client_oid from tbl_client where (month(now()) - month(refresh_time)) >= 4) as total_stale_client_records;
-
-
--- end;
 
 create table tbl_client_availability_tracker (
 	oid integer not null auto_increment,
@@ -671,16 +647,27 @@ begin
 			d2.rating = d1.rating,
 			d2.age = d1.age,
 			d2.rate_15_min = d1.rate_15_min,
+			d2.diff_15_min = (d1.rate_15_min - d2.rate_15_min),
 			d2.rate_30_min = d1.rate_30_min,
+			d2.diff_30_min = (d1.rate_30_min - d2.rate_30_min),
 			d2.rate_45_min = d1.rate_45_min,
+			d2.diff_45_min = (d1.rate_45_min - d2.rate_45_min),
 			d2.rate_1_hour = d1.rate_1_hour,
+			d2.diff_1_hour = (d1.rate_1_hour - d2.rate_1_hour),
 			d2.rate_1_50_hour = d1.rate_1_50_hour,
+			d2.diff_1_50_hour = (d1.rate_1_50_hour - d2.rate_1_50_hour),
 			d2.rate_2_hour = d1.rate_2_hour,
+			d2.diff_2_hour = (d1.rate_2_hour - d2.rate_2_hour),
 			d2.rate_2_50_hour = d1.rate_2_50_hour,
+			d2.diff_2_50_hour = (d1.rate_2_50_hour - d2.rate_2_50_hour),
 			d2.rate_3_hour = d1.rate_3_hour,
+			d2.diff_3_hour = (d1.rate_3_hour - d2.rate_3_hour),
 			d2.rate_3_50_hour = d1.rate_3_50_hour,
+			d2.diff_3_50_hour = (d1.rate_3_50_hour - d2.rate_3_50_hour),
 			d2.rate_4_hour = d1.rate_4_hour,
+			d2.diff_4_hour = (d1.rate_4_hour - d2.rate_4_hour),
 			d2.rate_overnight = d1.rate_overnight,
+			d2.diff_overnight = (d1.rate_overnight - d2.rate_overnight),
 			d2.telephone = d1.telephone,
 			d2.url_page = d1.url_page,
 			d2.refresh_time = d1.refresh_time,
@@ -796,3 +783,39 @@ create index idx_client_analytics_user_id on tbl_client_analytics(user_id);
     timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     primary key (user_id_1, user_id_2)
 );
+
+
+create table if not exists tbl_order (
+	oid integer not null auto_increment,
+	user_id varchar(10),
+	username varchar(20),
+	location varchar(200),
+    region varchar(100),
+	order_reference varchar(50),
+	date_of_event date,
+	time_of_event time,
+	creation_date datetime,
+	modification_date datetime,
+	duration integer,
+	rate integer,
+	deductions integer,
+	surplus integer,
+	price integer, 			-- the final price
+	status varchar(20),
+	notes text,
+	primary key (oid)
+);
+
+
+create table if not exists tbl_client_watchlist (
+oid integer auto_increment,
+user_id varchar(10),
+primary key (oid)
+);
+
+-- (for some reason this command does not work) drop view if exists vw_todays_watchlist;
+
+create view vw_todays_watchlist as
+select user_id, username, nationality, telephone, location, rate_1_hour from tbl_client
+where user_id in (select user_id from tbl_client_watchlist) and date(refresh_time) = date(now());
+
