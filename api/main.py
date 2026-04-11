@@ -15,6 +15,10 @@ data_ingestion = DataIngestionImpl(property_manager)
 def read_root():
     return {"Hello": "World"}
 
+@app.get("/ping")
+def get_ping():
+    return "pong"
+
 @app.post("/clients")
 def load_client_data(records: list[str]):
     print("Number of records to load : " + str(len(records)))
