@@ -819,3 +819,32 @@ create view vw_todays_watchlist as
 select user_id, username, nationality, telephone, location, rate_1_hour from tbl_client
 where user_id in (select user_id from tbl_client_watchlist) and date(refresh_time) = date(now());
 
+-- create a table for email accounts
+
+CREATE TABLE IF NOT EXISTS tbl_email_config (
+    oid int auto_increment,
+    name varchar(10),
+    hostname varchar(100) not null,
+    port integer,
+    primary key (oid)
+);
+
+
+CREATE TABLE IF NOT EXISTS tbl_email_account (
+    oid int auto_increment,
+    username varchar(100) not null,
+    `password` varchar(100) not null,
+    formal_name varchar(100) not null,
+    email_config_id integer not null,
+    primary key (oid),
+    foreign key (email_config_id) references tbl_email_config(oid) on delete cascade
+);
+
+
+-- seeding some dummy data for the config
+
+INSERT INTO tbl_email_config (oid,name,hostname,port) VALUES
+	 (2,'GMAIL','smtp.gmail.com',587);
+
+INSERT INTO tbl_email_account (oid,username,password,formal_name,email_config_id) VALUES
+	 (1,'joe.bloggs@random.com','abcd1234','Joe Bloggs',2);
