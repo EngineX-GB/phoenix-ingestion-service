@@ -32,9 +32,6 @@ def emit_notification():
 @app.post("/clients")
 def load_client_data(records: list[str]):
     print("Number of records to load : " + str(len(records)))
-    # for r in records:
-    #     print("[DEBUG] " + r)
-    print("Attempting to process")
     result = data_ingestion.load_feed_data_from_json_feed(records, "SYSTEM")
     if result:
         ClientService.send_notification("update", "load", "OK", "Stored region data into datastore successfully")
