@@ -17,14 +17,18 @@ class DataIngestionImpl(IDataIngestion):
         self.property_manager = property_manager
         pass
 
-    def load_feed_data_from_json_feed(self, records: list[str]):
+    def load_feed_data_from_json_feed(self, records: list[str], feed_file : str):
         try:
             csv_read_rows = IngestionUtil.get_csv_rows_via_list(records)
             # add this to staging table
-            self.populate_staging_data(csv_read_rows, "SYSTEM")
+            self.populate_staging_data(csv_read_rows, feed_file)
+            return True
         except UnicodeDecodeError:
             print(
                 "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv data [SYSTEM]")
+            return False
+
+
 
     # load the feed file into the staging table and
     # call out the stored proc to formalise the data

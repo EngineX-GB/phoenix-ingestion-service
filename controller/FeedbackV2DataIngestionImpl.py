@@ -6,6 +6,7 @@ from mysql.connector import DataError
 from _mysql_connector import MySQLInterfaceError
 
 from controller.DataIngestionImpl import DataIngestionImpl
+from util.IngestionUtil import IngestionUtil
 
 
 class FeedbackV2DataIngestionImpl(DataIngestionImpl):
@@ -30,6 +31,12 @@ class FeedbackV2DataIngestionImpl(DataIngestionImpl):
         result = re.search(pattern, filename)
         if result:
             return result.group(1)
+        else:
+            pattern = re.compile("(\\d)+$") # check if the filename string contains a userid field (just digits)
+            result = re.search(pattern, filename)
+            if result:
+                s = result.group(0)
+                return s
         return None
 
     @staticmethod
@@ -38,6 +45,18 @@ class FeedbackV2DataIngestionImpl(DataIngestionImpl):
             return datetime.strptime(value, "%Y-%m-%dT%H:%M:%S.%f")
         except ValueError:
             return datetime.strptime(value, "%Y-%m-%dT%H:%M:%S")
+
+
+    def load_feed_data_from_json_feed(self, records: list[str], feed_file : str):
+        try:
+            csv_read_rows = IngestionUtil.get_csv_rows_via_list(records)
+            # add this to staging table
+            self.populate_staging_data(csv_read_rows, feed_file)
+            return True
+        except UnicodeDecodeError:
+            print(
+                "[ERROR] A UnicodeDecodeError exception has occurred when processing the csv data [SYSTEM]")
+            return False
 
 
     def populate_staging_data(self, csv_row: list, feed_file: str):
