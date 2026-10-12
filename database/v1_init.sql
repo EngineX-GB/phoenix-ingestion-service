@@ -848,3 +848,11 @@ INSERT INTO tbl_email_config (oid,name,hostname,port) VALUES
 
 INSERT INTO tbl_email_account (oid,username,password,formal_name,email_config_id) VALUES
 	 (1,'joe.bloggs@random.com','abcd1234','Joe Bloggs',2);
+
+create table if not exists tbl_data_override (
+	oid integer not null auto_increment,
+	user_id varchar(20),
+	json text,
+	updated_at timestamp default now(),
+	primary key (oid)
+);
