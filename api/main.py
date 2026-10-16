@@ -5,6 +5,8 @@ from fastapi import FastAPI, UploadFile, File
 from starlette.responses import JSONResponse
 from controller.DataIngestionImpl import DataIngestionImpl
 from controller.FeedbackV2DataIngestionImpl import FeedbackV2DataIngestionImpl
+from controller.PreviewDataIngestionImpl import PreviewDataIngestionImpl
+from controller.PreviewHeaderDataIngestionImpl import PreviewHeaderDataIngestionImpl
 from controller.PropertyManager import PropertyManager
 from model.FeedbackV2PayloadRequest import FeedbackV2PayloadRequest
 from service.ClientService import ClientService
@@ -13,7 +15,8 @@ app = FastAPI()
 property_manager = PropertyManager()
 data_ingestion = DataIngestionImpl(property_manager)
 feedbackv2_data_ingestion = FeedbackV2DataIngestionImpl(property_manager)
-
+preview_header_data_ingestion = PreviewHeaderDataIngestionImpl(property_manager)
+preview_data_ingestion = PreviewDataIngestionImpl(property_manager)
 
 @app.get("/")
 def read_root():
@@ -48,6 +51,24 @@ def load_feedbackv2_data(feedbackV2Request: FeedbackV2PayloadRequest):
         ClientService.send_notification("update", "load", "OK", "Stored feedback into datastore successfully")
     else:
         ClientService.send_notification("update", "load", "ERROR", "An error occurred when loading feedback data")
+
+@app.post("/preview/headers")
+def load_preview_headers(records: list[str]):
+    print("Number of preview headers to load : " + str(len(records)))
+    result = preview_header_data_ingestion.load_feed_data_from_json_feed(records, "SYSTEM")
+    if result:
+        print("Loaded preview headers successfully")
+    else:
+        print("Failed to load preview headers successfully")
+
+@app.post("/preview/data")
+def load_preview_data(records : list[str]):
+    print("Number of preview data to load : " + str(len(records)))
+    result = preview_data_ingestion.load_feed_data_from_json_feed(records, "SYSTEM")
+    if result:
+        print("Loaded preview data successfully")
+    else:
+        print("Failed to load preview data successfully")
 
 
 
