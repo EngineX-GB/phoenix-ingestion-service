@@ -16,6 +16,14 @@ from controller.UKPFeedbackDataIngestionLegacyImpl import UKPFeedbackDataIngesti
 from util.IngestionUtil import IngestionUtil
 from controller.PropertyManager import PropertyManager
 
+def env_dump():
+    print("")
+    print(f"Environment: {propertyManager.getEnvironment()}")
+    print(f"Client Endpoint : {propertyManager.get_client_service_url()}")
+    print(f"Datasource Host : {propertyManager.get_datasource_url()}")
+    print(f"Datasource name : {propertyManager.get_datasource_name()}")
+    print("")
+
 if __name__ == "__main__":
     propertyManager = PropertyManager()
     dataAccess = DataIngestionImpl(propertyManager)
@@ -45,9 +53,11 @@ if __name__ == "__main__":
             print("[INFO] Running Ingestion Service....")
             print("[WARN] This feature is not supported yet.")
         elif sys.argv[1] == "--api":
-            print("[INFO] Starting FastAPI server...")
+            print("")
+            print(f"Running Phoenix Ingestion and Analytics Service for {IngestionUtil.get_os_name()}")
+            env_dump()
             multiprocessing.freeze_support()
-            uvicorn.run("api.main:app", host="127.0.0.1", port=8000)
+            uvicorn.run("api.main:app", host=propertyManager.getServiceHost(), port=propertyManager.getServicePort())
         elif sys.argv[1] == "--cmd":
             print("[INFO] Running Ingestion Service....")
             if sys.argv[2] == "--batch":
