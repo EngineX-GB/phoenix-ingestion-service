@@ -17,6 +17,7 @@ data_ingestion = DataIngestionImpl(property_manager)
 feedbackv2_data_ingestion = FeedbackV2DataIngestionImpl(property_manager)
 preview_header_data_ingestion = PreviewHeaderDataIngestionImpl(property_manager)
 preview_data_ingestion = PreviewDataIngestionImpl(property_manager)
+client_service = ClientService(property_manager)
 
 @app.get("/")
 def read_root():
@@ -27,19 +28,23 @@ def get_ping():
     return "pong"
 
 
+@app.get("/configs")
+def get_service_configs():
+    return property_manager.get_list_of_configs()
+
 @app.post("/notification/emit")
 def emit_notification():
     print("[INFO] Emit notification for testing purposes only")
-    ClientService.send_notification("update", "test", "OK", "Test notification")
+    client_service.send_notification("update", "test", "OK", "Test notification")
 
 @app.post("/clients")
 def load_client_data(records: list[str]):
     print("Number of records to load : " + str(len(records)))
     result = data_ingestion.load_feed_data_from_json_feed(records, "SYSTEM")
     if result:
-        ClientService.send_notification("update", "load", "OK", "Stored region data into datastore successfully")
+        client_service.send_notification("update", "load", "OK", "Stored region data into datastore successfully")
     else:
-        ClientService.send_notification("update", "load", "ERROR", "An error occurred when loading region data")
+        client_service.send_notification("update", "load", "ERROR", "An error occurred when loading region data")
 
 @app.post("/feedbackv2")
 def load_feedbackv2_data(feedbackV2Request: FeedbackV2PayloadRequest):
@@ -48,9 +53,9 @@ def load_feedbackv2_data(feedbackV2Request: FeedbackV2PayloadRequest):
     print(f"Number of feedback records to load for {userId} : {len(records)}")
     result = feedbackv2_data_ingestion.load_feed_data_from_json_feed(records, userId)
     if result:
-        ClientService.send_notification("update", "load", "OK", "Stored feedback into datastore successfully")
+        client_service.send_notification("update", "load", "OK", "Stored feedback into datastore successfully")
     else:
-        ClientService.send_notification("update", "load", "ERROR", "An error occurred when loading feedback data")
+        client_service.send_notification("update", "load", "ERROR", "An error occurred when loading feedback data")
 
 @app.post("/preview/headers")
 def load_preview_headers(records: list[str]):

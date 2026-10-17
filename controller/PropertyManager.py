@@ -1,16 +1,19 @@
 import os
-class PropertyManager:
 
+
+class PropertyManager:
 
     def __init__(self):
         self.datasource_url = "localhost" if (
                 os.getenv("DATASOURCE_URL") is None) else str(os.getenv("DATASOURCE_URL"))
         self.datasource_username = "root" if (
-            os.getenv("DATASOURCE_USERNAME") is None) else str(os.getenv("DATASOURCE_USERNAME"))
+                os.getenv("DATASOURCE_USERNAME") is None) else str(os.getenv("DATASOURCE_USERNAME"))
         self.datasource_password = "root" if (
                 os.getenv("DATASOURCE_PASSWORD") is None) else str(os.getenv("DATASOURCE_PASSWORD"))
         self.datasource_name = "db_phoenix" if (
                 os.getenv("DATASOURCE_NAME") is None) else str(os.getenv("DATASOURCE_NAME"))
+        self.client_service_url = "http://localhost:8081" if (
+                os.getenv("CLIENT_SERVICE_URL") is None) else str(os.getenv("CLIENT_SERVICE_URL"))
 
     def get_datasource_url(self):
         return self.datasource_url
@@ -23,3 +26,15 @@ class PropertyManager:
 
     def get_datasource_name(self):
         return self.datasource_name
+
+    def get_client_service_url(self):
+        return self.client_service_url
+
+    def get_list_of_configs(self):
+        return {
+            "datasource_url" : self.datasource_url,
+            "datasource_username" : self.datasource_username,
+            "datasource_password" : self.datasource_password,
+            "datasource_name" : self.datasource_name,
+            "client_service_url" : self.client_service_url
+        }

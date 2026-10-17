@@ -3,11 +3,11 @@ import requests
 
 class ClientService:
 
-    def __init__(self):
-        pass
+    def __init__(self, property_manager):
+        self.property_manager = property_manager
 
-    @staticmethod
-    def send_notification(notification_type, operation, status, detail):
+
+    def send_notification(self,notification_type, operation, status, detail):
         payload = {
             "notificationType" : notification_type,
             "content" : {
@@ -17,7 +17,7 @@ class ClientService:
                 "detail" : detail
             }
         }
-        response = requests.post("http://localhost:8081/notifications/publish", json=payload)
+        response = requests.post(f"{self.property_manager.get_client_service_url}/notifications/publish", json=payload)
         if response.status_code != 201:
             print(f'[ERROR] An error has occurred when sending a notification to the phoenix client service : {response.status_code}')
 
