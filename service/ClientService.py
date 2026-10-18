@@ -17,7 +17,7 @@ class ClientService:
                 "detail" : detail
             }
         }
-        response = requests.post(f"{self.property_manager.get_client_service_url}/notifications/publish", json=payload)
+        response = requests.post(f"{self.property_manager.get_client_service_url()}/notifications/publish", json=payload)
         if response.status_code != 201:
             print(f'[ERROR] An error has occurred when sending a notification to the phoenix client service : {response.status_code}')
 
