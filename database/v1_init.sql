@@ -848,3 +848,35 @@ INSERT INTO tbl_email_config (oid,name,hostname,port) VALUES
 
 INSERT INTO tbl_email_account (oid,username,password,formal_name,email_config_id) VALUES
 	 (1,'joe.bloggs@random.com','abcd1234','Joe Bloggs',2);
+
+create table if not exists tbl_data_override (
+	oid integer not null auto_increment,
+	user_id varchar(20),
+	json text,
+	updated_at timestamp default now(),
+	primary key (oid)
+);
+
+CREATE TABLE IF NOT EXISTS tbl_preview_header (
+    user_id varchar(20) not null,
+    title text,
+    details text,
+    start_date date,
+    end_date date,
+    is_active boolean,
+    business_key varchar(250),
+    primary key (business_key)
+);
+
+CREATE TABLE IF NOT EXISTS tbl_preview_data (
+    user_id varchar(20) not null,
+    country varchar(50),
+    region varchar(50),
+    county varchar(50),
+    town varchar(50),
+    postcode varchar(10),
+    details text,
+    availability_date date,
+    business_key varchar(250),
+    primary key (availability_date, business_key)
+);

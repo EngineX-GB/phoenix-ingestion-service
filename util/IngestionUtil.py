@@ -101,3 +101,10 @@ class IngestionUtil:
         if type == "int":
             value = value.replace("+", "")
             return int(value)
+
+    @staticmethod
+    def get_os_name():
+        if os.name == "nt":
+            return "Windows"
+        else:
+            return os.name
