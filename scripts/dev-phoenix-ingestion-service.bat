@@ -1,0 +1,13 @@
+@echo off
+SET DATASOURCE_URL=localhost
+SET DATASOURCE_USERNAME=root
+SET DATASOURCE_PASSWORD=root
+SET DATASOURCE_NAME=dev_db_phoenix
+SET CLIENT_SERVICE_URL=http://localhost:9081
+SET ENV=DEV
+SET SERVICE_PORT=9000
+SET SERVICE_HOST=127.0.0.1
+
+%CD%\DataIngestionRunner.exe --api
+
+@echo on
