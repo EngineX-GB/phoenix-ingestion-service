@@ -36,3 +36,7 @@ This is to load the data from the staging table into the master table (`tbl_clie
 `DataIngestionRunner.exe --cmd --analytics`
 
 This is to run flush and run analytics for ALL clients in the system.
+
+For full list of pip dependencies and versions:
+
+`pip list`

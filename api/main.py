@@ -75,7 +75,9 @@ def load_preview_data(records : list[str]):
     else:
         print("Failed to load preview data successfully")
 
-
+@app.get("/config")
+def get_config():
+    return property_manager.get_list_of_configs()
 
 
 #
