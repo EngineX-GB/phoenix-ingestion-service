@@ -32,7 +32,11 @@ class ClientAnalyticsProcessor:
             cursor.execute(query)
             print("[INFO] Loaded links for User ID : " + user_id + ", row count : " + str(cursor.rowcount))
 
+    # this function is for the cmd mode
     def run_analytics(self):
+        self.run_analytics_by_user_ids([])
+
+    def run_analytics_by_user_ids(self, input_user_id_list: list[str]):
         mydb = mysql.connector.connect(
             host=self.property_manager.get_datasource_url(),
             user=self.property_manager.get_datasource_username(),
@@ -42,11 +46,19 @@ class ClientAnalyticsProcessor:
 
         user_id_list = []
         mysql_cursor = mydb.cursor()
-        query = "SELECT user_id FROM tbl_client"
-        mysql_cursor.execute(query)
-        result_set = mysql_cursor.fetchall()
-        for (user_id,) in result_set:
-            user_id_list.append(user_id)
+
+        if len(input_user_id_list) == 0:
+            # if there is no user id in the input list,
+            # then to analytics for all users in the client table
+            query = "SELECT user_id FROM tbl_client"
+            mysql_cursor.execute(query)
+            result_set = mysql_cursor.fetchall()
+            for (user_id,) in result_set:
+                user_id_list.append(user_id)
+        else:
+            # if there are userids in the input list
+            # then only run the analytics for those userids
+            user_id_list.extend(input_user_id_list)
 
         row = self.get_load_dates(mysql_cursor)
         if row:
@@ -57,15 +69,9 @@ class ClientAnalyticsProcessor:
         else:
             raise Exception("An error occurred when trying to get load dates for preparing analytics.")
 
-
-
         #load links:
         self.load_links_from_feedback_data(user_id_list, mysql_cursor)
 
-
-        # TODO: commented for now. Uncomment later
-        #links_processor = LinkAnalyticsProcessor()
-        #links_processor.get_user_2_list(["800128"], 0, 2, mysql_cursor)
 
 
 

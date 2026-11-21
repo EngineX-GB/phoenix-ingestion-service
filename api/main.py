@@ -3,6 +3,8 @@ import zipfile
 
 from fastapi import FastAPI, UploadFile, File
 from starlette.responses import JSONResponse
+
+from analytics.ClientAnalyticsProcessor import ClientAnalyticsProcessor
 from controller.DataIngestionImpl import DataIngestionImpl
 from controller.FeedbackV2DataIngestionImpl import FeedbackV2DataIngestionImpl
 from controller.PreviewDataIngestionImpl import PreviewDataIngestionImpl
@@ -18,6 +20,7 @@ feedbackv2_data_ingestion = FeedbackV2DataIngestionImpl(property_manager)
 preview_header_data_ingestion = PreviewHeaderDataIngestionImpl(property_manager)
 preview_data_ingestion = PreviewDataIngestionImpl(property_manager)
 client_service = ClientService(property_manager)
+client_analytics_processor = ClientAnalyticsProcessor(property_manager)
 
 @app.get("/")
 def read_root():
@@ -74,6 +77,19 @@ def load_preview_data(records : list[str]):
         print("Loaded preview data successfully")
     else:
         print("Failed to load preview data successfully")
+
+@app.post("/analytics/load/all")
+def load_analytics_for_all_users():
+    print("Load Analytics for all assets...")
+    client_analytics_processor.run_analytics()
+    client_service.send_notification("update", "load", "OK", "Loading analytics completed")
+
+@app.post("/analytics/load/by-user")
+def load_analytics_by_user_id(user_id_list : list[str]):
+    print(f"Load Analytics for {len(user_id_list)} assets...")
+    client_analytics_processor.run_analytics_by_user_ids(user_id_list)
+    client_service.send_notification("update", "load", "OK", "Loading analytics completed")
+
 
 @app.get("/config")
 def get_config():
